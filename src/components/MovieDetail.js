@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchMovieDetails } from "../api/tmdb";
+import {Ionicons} from "@expo/vector-icons"
 import moment from "moment";
 import "../css/App.css";
 
@@ -8,18 +9,19 @@ import "../css/App.css";
 const MovieDetail = () => {
   const { id } = useParams(); // URL에서 영화 ID 가져오기
   const [movie, setMovie] = useState(null); // 영화 상세 데이터 상태
-  const [rate,setRate] = useState('5')
+  const [rate, setRate] = useState('5')
   const [review, setReview] = useState("")
   const [reviewList, setReviewList] = useState([])
   const [editable, setEditable] = useState(false)
   const [editId, setEditId] = useState(-1)
+  const [editedReview, setEditedReview] = useState("")
 
   const navigate = useNavigate(); // 뒤로가기 버튼 처리를 위한 네비게이션
 
-  const buttonHandle = () =>{
+  const buttonHandle = () => {
     const newReview = {
-      id:reviewList.length+1,
-      user:"유저 이름",
+      id: reviewList.length + 1,
+      user: "유저 이름",
       rate: Number(rate),
       review: review,
       date: moment().format('MM/DD HH:mm')
@@ -28,15 +30,19 @@ const MovieDetail = () => {
     setReview("")
   }
 
-  const handleRemove = (id) =>{
+  const handleRemove = (id) => {
     const newList = reviewList.filter((item) => item.id !== id)
     setReviewList(newList)
-  } 
-
-  const handleEdit = (id) =>{
-    setEditId(id)
-    setEditable(true)
   }
+
+  const handleEdit = (item) => {
+    setEditId(item.id)
+    setEditable(true)
+    setEditedReview(item.review)
+    setRate("5")
+    console.log(editId + "/" + editable)
+  }
+
 
 
   useEffect(() => {
@@ -56,11 +62,11 @@ const MovieDetail = () => {
       url(https://image.tmdb.org/t/p/original/${movie.backdrop_path})`,
       backgroundSize: 'cover',
     }}>
-    <button
+      <button
         onClick={() => navigate(-1)} // 이전 페이지로 이동
         className="back-button">
         ← 뒤로 가기
-    </button>
+      </button>
       <div className="detail-header">
         <img
           src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
@@ -75,7 +81,7 @@ const MovieDetail = () => {
       </div>
       <div>
         <p><strong>리뷰 작성</strong></p>
-        <p>유저 평점: {reviewList.length === 0 ? 0 :(reviewList.reduce((acc,cur) => {return acc + cur.rate},0) / reviewList.length).toFixed(2)}</p>
+        <p>유저 평점: {reviewList.length === 0 ? 0 : (reviewList.reduce((acc, cur) => { return acc + cur.rate }, 0) / reviewList.length).toFixed(2)}</p>
         <select name="rate" onChange={(e) => setRate(e.target.value)}>
           <option value='5'>★★★★★</option>
           <option value='4'>★★★★☆</option>
@@ -83,7 +89,7 @@ const MovieDetail = () => {
           <option value='2'>★★☆☆☆</option>
           <option value='1'>★☆☆☆☆</option>
         </select>
-        <input placeholder="리뷰의 내용을 입력해주세요" value={review} onChange={(e) => setReview(e.target.value)}/>
+        <input placeholder="리뷰의 내용을 입력해주세요" value={review} onChange={(e) => setReview(e.target.value)} />
         <button onClick={buttonHandle}>올리기</button>
       </div>
       <div className="detail-review-list">
@@ -91,12 +97,33 @@ const MovieDetail = () => {
           {
             reviewList.map(item =>
               <li key={item.id} className="review-item">
-                <span>{item.user}</span>
-                <span>{item.rate}</span>
-                <span>{item.review}</span>
-                <span>{item.date}</span>
-                <button onClick={() => handleEdit(item.id)}>수정</button>
-                <button onClick={() => handleRemove(item.id)}>삭제</button>
+                <div className="review-item-container">
+                  <span>{item.user}</span>
+                  <span>{item.rate}</span>
+                  <span>{item.review}</span>
+                  <span>{item.date}</span>
+                  <button onClick={() => handleEdit(item)}>수정</button>
+                  <button onClick={() => handleRemove(item.id)}>삭제</button>
+                </div>
+                {editable && item.id == editId &&
+                (<div className="review-item-edit">
+                  <span></span>
+                  <select name="rate" onChange={(e) => setRate(e.target.value)}>
+                    <option value='5'>★★★★★</option>
+                    <option value='4'>★★★★☆</option>
+                    <option value='3'>★★★☆☆</option>
+                    <option value='2'>★★☆☆☆</option>
+                    <option value='1'>★☆☆☆☆</option>
+                  </select>
+                  <input placeholder="리뷰의 내용을 입력해주세요" value={editedReview} onChange={(e) => setEditedReview(e.target.value)} />
+                  <span></span>
+                  <button onClick ={() => {
+                    item.review = editedReview
+                    item.rate = rate
+                    setEditable(false)
+                  }}>수정하기</button>
+                  <button onClick ={() => setEditable(false)}>취소</button>
+                </div>)}
               </li>
             )
           }

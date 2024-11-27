@@ -228,9 +228,22 @@ input {
   max-height: 300px; /* 세로 스크롤 제한 */
 }
 
-.review-item {
+.review-item{
+  list-style-type: none;
+}
+
+.review-item-container {
   display: grid;
   grid-template-columns: 1fr 0.5fr 5fr 1fr 0.5fr 0.5fr;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.review-item-edit {
+  display: grid;
+  grid-template-columns: 1fr 0.5fr 5fr 1fr 0.5fr 0.5fr;
+  height: auto;
   gap: 10px;
   padding: 10px 0;
   border-bottom: 1px solid #ddd;
