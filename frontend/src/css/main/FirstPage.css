@@ -16,7 +16,7 @@
     align-items: center;
     text-align: center;
   }
-
+  
   .content {
     background-color: rgba(0, 0, 0, 0.4); /* 반투명 검은색 배경 */
     padding: 40px 60px; /* 내부 콘텐츠 여백 */

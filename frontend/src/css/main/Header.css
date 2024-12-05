@@ -1,8 +1,10 @@
 .main-header {
     display: flex;
-    justify-content: space-between; /* 전체적으로 가운데 정렬 */
+    justify-content: flex-start; /* 전체적으로 가운데 정렬 */
     align-items: center; /* 수직 정렬 */
+    position: relative; /* 버튼을 절대 위치로 배치하기 위한 부모 설정 */
     height: 60px; /* 헤더 높이 */
+    padding: 0 20px;
   }
   
   .main-header h1 {
@@ -10,20 +12,11 @@
     font-size: 30px;
     font-weight: bold;
   }
-
-  .main-header input {
-    margin-right: 30px;
-  }
-
-  .logo {
-    width: 250px;
-    cursor: pointer;
-    /* border: 1px solid white; */
-  }
   
   .main-header button {
+    position: absolute; /* 절대 위치 */
     right: 100px; /* 우측 여백 */
-    padding: 10px 10px;
+    padding: 10px 20px;
     font-size: 14px;
     background-color: #d81f26; /* 버튼 색상 */
     color: white;
@@ -35,4 +28,15 @@
   .main-header button:hover {
     background-color: #a3151d; /* 호버 시 어두운 색상 */
   }
-  
+
+  .profile-icon {
+    position: absolute;
+    cursor: pointer;
+    right: 10px;
+    margin-left: auto;
+  }
+
+  .auth-actions {
+    display: flex;
+    align-items: center;
+  }

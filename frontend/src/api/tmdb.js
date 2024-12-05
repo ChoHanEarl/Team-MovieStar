@@ -70,15 +70,3 @@ export const fetchTopRatedMovies = async () => {
     return [];
   }
 };
-
-//출연진 목록을 가져오는 함수
-export const fetchMovieCredits = async (movieId) => {
-  try {
-    const response = await instance.get(`/movie/${movieId}/credits`);
-    console.log("API 응답 데이터:", response.data); // 응답 데이터 구조 확인
-    return response.data; // cast 배열을 가져오는 대신 전체 데이터를 반환
-  } catch (error) {
-    console.error("Error fetching movie credits:", error);
-    return { cast: [] }; // 오류 발생 시 기본값 설정
-  }
-};

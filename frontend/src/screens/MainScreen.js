@@ -4,7 +4,7 @@ import { fetchPopularMovies, fetchNowPlayingMovies, fetchTopRatedMovies, searchM
 import { AppContext } from "../context/AppContext.js";
 import MovieDetail from "../components/MovieDetail.js";
 import MovieSlider from "../components/MovieSlider.js";
-import logo from "../logo/logo.png"
+import { AccountCircle } from '@mui/icons-material';
 
 import "../css/main/Header.css"
 import "../css/main/TopRecommendation.css"
@@ -76,11 +76,6 @@ const TopRecommendation = ({ movies,onMovieSelect }) => {
     // 화면 이동 함수 정의
     const navigate = useNavigate()
 
-    // 로고 클릭 시 메인화면 띄우기(추후 마이페이지에서 활용)
-    const handleLogoClick = () => {
-      navigate("/home")
-    }
-
     // 로그인 버튼 클릭 시
     const navigateToLoginScreen = () => {
         navigate("/login") // LoginScreen으로 이동
@@ -89,11 +84,7 @@ const TopRecommendation = ({ movies,onMovieSelect }) => {
     // 로그아웃 버튼 클릭 시
     const handleLogout = () => {
         setUser(null) // 사용자 로그아웃 처리
-    }
-
-    // 마이페이지로 이동하는 함수
-    const navigateToMyPage = () => {
-        navigate("/mypage")
+        navigate("/login") // 다시 LoginScreen으로 이동
     }
   
     // 컴포넌트 마운트 시 영화 데이터 초기 로딩
@@ -109,10 +100,10 @@ const TopRecommendation = ({ movies,onMovieSelect }) => {
         setNowPlayingMovies(nowPlaying);
         setTopRatedMovies(topRated);
       };
-      
+  
       fetchMovies();
     }, []);
-
+  
     // 영화 검색 핸들러
     const handleSearch = async (query) => {
       setSearchQuery(query);
@@ -135,26 +126,35 @@ const TopRecommendation = ({ movies,onMovieSelect }) => {
     const handleCloseMovieDetail = () => {
       setSelectedMovie(null);
     };
+
+
   
     return (
       <div className="app">
         <div className="main-header">
-          <img src={logo} className="logo" onClick={handleLogoClick}/>
+            <h1>영화 추천</h1>
+            {/* 로그인, 로그아웃 버튼 */}
+            <div className="auth-actions">
+            { user ? (
+                <button onClick={handleLogout}>로그아웃</button>
+            ) : (
+                <button onClick={navigateToLoginScreen}>로그인</button>
+            )}
+            </div>
+            
+            {/* 마이페이지 아이콘 추가 */}
+            {user && (
+              <div className="profile-icon">
+                <AccountCircle style={{ fontSize: 40, cursor: 'pointer' }} onClick={() => navigate('/MyInfo')} />
+              </div>
+            )}
+
             {/* 영화 검색 입력창 */}
             <input
             type="text"
             placeholder="Search Movies..."
             onChange={(e) => handleSearch(e.target.value)}
             />
-            {/* 로그인, 로그아웃 버튼 */}
-            { user ? (
-              <>
-                <button onClick={navigateToMyPage}>마이페이지</button>
-                <button onClick={handleLogout}>로그아웃</button>
-              </>
-            ) : (
-                <button onClick={navigateToLoginScreen}>로그인</button>
-            )}
         </div>
         {/* 검색 결과 또는 기본 영화 리스트 조건부 렌더링 */}
         {searchQuery && filteredMovies.length > 0 ? (

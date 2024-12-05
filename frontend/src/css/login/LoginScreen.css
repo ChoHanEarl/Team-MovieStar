@@ -11,29 +11,16 @@ body {
 
 .login-container {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  padding: 20px;
-}
-
-.logo-box {
-  display: flex;
-  justify-content: center;
-}
-
-.loginLogo {
-  max-width: 350px; /* 로고 크기 제한 */
   width: 100%;
-  height: auto;
-  cursor: pointer;
+  height: 100%;
 }
 
 .login-box {
   width: 100%;
   max-width: 400px;
-  background: #2c2c2c; /* 더 어두운 컨테이너 */
+  background: #1e1e1e; /* 더 어두운 컨테이너 */
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8); /* 부드러운 그림자 */
@@ -160,7 +147,7 @@ h2 {
   max-width: 400px;
   margin: 50px auto;
   padding: 20px;
-  background-color: #2c2c2c;
+  background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
@@ -169,7 +156,7 @@ h2 {
 .find-id-container h2 {
   margin-bottom: 20px;
   font-size: 24px;
-  color: #f5f5f5;
+  color: #333;
 }
 
 .input-group {
@@ -181,22 +168,16 @@ h2 {
   display: block;
   margin-bottom: 5px;
   font-size: 14px;
-  color: #fff;
+  color: #555;
 }
 
 .input-group input {
   width: 100%;
   padding: 10px;
-  margin-top: 10px;
   font-size: 14px;
   border: 1px solid #ddd;
   border-radius: 4px;
   box-sizing: border-box;
-}
-
-.input-group input:focus {
-  border-color: red; /* 포커스 시 테두리 색상 */
-  outline: none; /* 기본 포커스 스타일 제거 */
 }
 
 .find-id-button {
@@ -218,7 +199,7 @@ h2 {
 .result-message {
   margin-top: 20px;
   font-size: 14px;
-  color: #fff;
+  color: #333;
 }
 
 /* FindPassword.css */
@@ -226,15 +207,16 @@ h2 {
   max-width: 400px;
   margin: 50px auto;
   padding: 20px;
+  border: 1px solid #ddd;
   border-radius: 8px;
   text-align: center;
-  background-color: #2c2c2c;
+  background-color: #f9f9f9;
 }
 
 .find-password-container h2 {
   margin-bottom: 20px;
   font-size: 24px;
-  color: #fff;
+  color: black;
 }
 
 .find-password-container form {
@@ -246,7 +228,7 @@ h2 {
   margin-bottom: 5px;
   text-align: left;
   font-size: 14px;
-  color: #fff;
+  color: #555;
 }
 
 .find-password-container input {
@@ -259,11 +241,6 @@ h2 {
   max-width: 400px; /* 최대 400px로 제한 */
 }
 
-
-.find-password-container input:focus {
-  border-color: red; /* 포커스 시 테두리 색상 */
-  outline: none; /* 기본 포커스 스타일 제거 */
-}
 
 .find-password-container button {
   padding: 10px;
@@ -282,7 +259,7 @@ h2 {
 .find-password-container p {
   margin-top: 15px;
   font-size: 14px;
-  color: #fff;
+  color: #333;
 }
 
 /* Signup.css */
@@ -290,8 +267,9 @@ h2 {
   max-width: 400px; /* 컨테이너 최대 너비 */
   margin: 50px auto; /* 가운데 정렬 */
   padding: 20px;
+  border: 1px solid #ddd; /* 테두리 */
   border-radius: 8px; /* 모서리 둥글게 */
-  background-color: #2c2c2c; /* 배경색 */
+  background-color: #f9f9f9; /* 배경색 */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 약간의 그림자 */
   text-align: center;
 }
@@ -299,7 +277,7 @@ h2 {
 .signup-container h2 {
   margin-bottom: 20px;
   font-size: 24px;
-  color: #fff; /* 제목 텍스트 색상 */
+  color: #333; /* 제목 텍스트 색상 */
 }
 
 .signup-container form {
@@ -312,12 +290,12 @@ h2 {
   margin-bottom: 5px;
   text-align: left;
   font-size: 14px;
-  color: #fff; /* 레이블 텍스트 색상 */
+  color: #555; /* 레이블 텍스트 색상 */
   width: 100%; /* 입력 필드와 동일한 너비 */
 }
 
 .signup-container input {
-  margin-top: 10px;
+  margin-bottom: 15px;
   padding: 10px;
   font-size: 14px;
   border: 1px solid #ddd; /* 입력 필드 테두리 */
@@ -327,7 +305,7 @@ h2 {
 }
 
 .signup-container input:focus {
-  border-color: red; /* 포커스 시 테두리 색상 */
+  border-color: #007bff; /* 포커스 시 테두리 색상 */
   outline: none; /* 기본 포커스 스타일 제거 */
 }
 
@@ -350,7 +328,7 @@ h2 {
 .signup-container p {
   margin-top: 15px;
   font-size: 14px;
-  color: #fff;
+  color: #333;
 }
 
 

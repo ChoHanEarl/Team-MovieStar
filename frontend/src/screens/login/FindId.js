@@ -9,12 +9,12 @@ const FindId = () => {
         e.preventDefault();
 
         // 실제 서비스에서는 서버로 이메일 데이터를 보내고 결과를 받아옵니다.
-    //     if (email === `${}`) {
-    //         setMessage(`회원님의 아이디는 ${}입니다.`);
-    //     } else {
-    //         setMessage('입력하신 정보와 일치하는 아이디가 없습니다.');
-    //     }
-       };
+        if (email === 'example@example.com') {
+            setMessage('회원님의 아이디는 "user123"입니다.');
+        } else {
+            setMessage('입력하신 정보와 일치하는 아이디가 없습니다.');
+        }
+    };
 
     return (
         <div className="find-id-container">
