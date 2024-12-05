@@ -9,7 +9,7 @@ import "./css/App.css";
 const TopRecommendation = ({ movies }) => {
   const [currentIndex, setCurrentIndex] = useState(0); // 현재 추천 영화의 인덱스를 관리
   const navigate = useNavigate(); // 라우터 내비게이션을 위한 훅
-
+//dddddddd
   useEffect(() => {
     if (!movies || movies.length === 0) return;
 
