@@ -1,0 +1,357 @@
+body {
+  margin: 0;
+  font-family: 'Helvetica', Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #121212; /* 어두운 배경 */
+  color: #f5f5f5; /* 밝은 텍스트 */
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 20px;
+}
+
+.logo-box {
+  display: flex;
+  justify-content: center;
+}
+
+.loginLogo {
+  max-width: 350px; /* 로고 크기 제한 */
+  width: 100%;
+  height: auto;
+  cursor: pointer;
+}
+
+.login-box {
+  width: 100%;
+  max-width: 400px;
+  background: #2c2c2c; /* 더 어두운 컨테이너 */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8); /* 부드러운 그림자 */
+}
+
+h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #f5f5f5;
+  text-align: center;
+}
+
+.login-form {
+  margin-bottom: 20px;
+}
+
+.input-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #ccc; /* 부드러운 텍스트 색상 */
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #333; /* 어두운 테두리 */
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: #252525; /* 어두운 입력 필드 배경 */
+  color: #f5f5f5;
+}
+
+.input-group input::placeholder {
+  color: #777; /* 플레이스홀더 색상 */
+}
+
+.login-button {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  background-color: #e50914; /* 넷플릭스 레드 같은 컬러 */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+  background-color: #b20710; /* 버튼 호버 시 더 어두운 빨강 */
+}
+
+.social-login-section {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.social-login-title {
+  font-size: 16px;
+  color: #f5f5f5;
+  margin-bottom: 10px;
+}
+
+.social-login {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.social-button {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  color: white;
+}
+
+.social-button:hover {
+  transform: scale(1.05); /* 버튼 확대 효과 */
+}
+
+.social-button.naver {
+  background-color: #03c75a; /* 네이버 녹색 */
+}
+
+.social-button.kakao {
+  background-color: #fee500; /* 카카오 노란색 */
+  color: #000;
+}
+
+.social-button.google {
+  background-color: #4285f4; /* 구글 파란색 */
+}
+
+.links {
+  margin-top: 15px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.links a {
+  margin: 0 10px;
+  color: #e50914; /* 넷플릭스 레드와 같은 링크 색상 */
+  text-decoration: none;
+}
+
+.links a:hover {
+  text-decoration: underline;
+}
+
+/* FindId.css */
+.find-id-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #2c2c2c;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.find-id-container h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #f5f5f5;
+}
+
+.input-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #fff;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.input-group input:focus {
+  border-color: red; /* 포커스 시 테두리 색상 */
+  outline: none; /* 기본 포커스 스타일 제거 */
+}
+
+.find-id-button {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.find-id-button:hover {
+  background-color: #0056b3;
+}
+
+.result-message {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #fff;
+}
+
+/* FindPassword.css */
+.find-password-container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  background-color: #2c2c2c;
+}
+
+.find-password-container h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #fff;
+}
+
+.find-password-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.find-password-container label {
+  margin-bottom: 5px;
+  text-align: left;
+  font-size: 14px;
+  color: #fff;
+}
+
+.find-password-container input {
+  margin-bottom: 15px;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 90%;
+  max-width: 400px; /* 최대 400px로 제한 */
+}
+
+
+.find-password-container input:focus {
+  border-color: red; /* 포커스 시 테두리 색상 */
+  outline: none; /* 기본 포커스 스타일 제거 */
+}
+
+.find-password-container button {
+  padding: 10px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.find-password-container button:hover {
+  background-color: #0056b3;
+}
+
+.find-password-container p {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #fff;
+}
+
+/* Signup.css */
+.signup-container {
+  max-width: 400px; /* 컨테이너 최대 너비 */
+  margin: 50px auto; /* 가운데 정렬 */
+  padding: 20px;
+  border-radius: 8px; /* 모서리 둥글게 */
+  background-color: #2c2c2c; /* 배경색 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 약간의 그림자 */
+  text-align: center;
+}
+
+.signup-container h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #fff; /* 제목 텍스트 색상 */
+}
+
+.signup-container form {
+  display: flex;
+  flex-direction: column; /* 세로 정렬 */
+  align-items: center;
+}
+
+.signup-container label {
+  margin-bottom: 5px;
+  text-align: left;
+  font-size: 14px;
+  color: #fff; /* 레이블 텍스트 색상 */
+  width: 100%; /* 입력 필드와 동일한 너비 */
+}
+
+.signup-container input {
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ddd; /* 입력 필드 테두리 */
+  border-radius: 4px; /* 입력 필드 모서리 둥글게 */
+  width: 100%; /* 입력 필드 너비 */
+  box-sizing: border-box; /* 패딩 포함 크기 계산 */
+}
+
+.signup-container input:focus {
+  border-color: red; /* 포커스 시 테두리 색상 */
+  outline: none; /* 기본 포커스 스타일 제거 */
+}
+
+.signup-container button {
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: #007bff; /* 기본 버튼 색상 */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* 부드러운 색상 전환 */
+}
+
+.signup-container button:hover {
+  background-color: #0056b3; /* 호버 시 어두운 색상 */
+}
+
+.signup-container p {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #fff;
+}
+
+
+

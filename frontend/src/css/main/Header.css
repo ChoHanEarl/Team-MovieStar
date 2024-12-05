@@ -1,0 +1,38 @@
+.main-header {
+    display: flex;
+    justify-content: space-between; /* 전체적으로 가운데 정렬 */
+    align-items: center; /* 수직 정렬 */
+    height: 60px; /* 헤더 높이 */
+  }
+  
+  .main-header h1 {
+    margin: 0;
+    font-size: 30px;
+    font-weight: bold;
+  }
+
+  .main-header input {
+    margin-right: 30px;
+  }
+
+  .logo {
+    width: 250px;
+    cursor: pointer;
+    /* border: 1px solid white; */
+  }
+  
+  .main-header button {
+    right: 100px; /* 우측 여백 */
+    padding: 10px 10px;
+    font-size: 14px;
+    background-color: #d81f26; /* 버튼 색상 */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .main-header button:hover {
+    background-color: #a3151d; /* 호버 시 어두운 색상 */
+  }
+  

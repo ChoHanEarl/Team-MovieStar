@@ -1,0 +1,61 @@
+/* 최상단 추천 영화 컨테이너 */
+.top-recommendation-container {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+  
+  /* 최상단 추천 영화 슬라이드 */
+  .top-recommendation {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 100%; /* 기본적으로 화면 밖으로 이동 */
+    opacity: 0;
+    transition: all 0.8s ease-in-out; /* 슬라이딩 및 페이드 효과 */
+  }
+  
+  /* 활성 슬라이드 */
+  .top-recommendation.active {
+    left: 0; /* 화면 안으로 이동 */
+    opacity: 1;
+  }
+  
+  /* 비활성 슬라이드 (이전 슬라이드) */
+  .top-recommendation.inactive {
+    left: -100%; /* 이전 슬라이드는 화면 밖으로 이동 */
+    opacity: 0;
+  }
+  
+  .top-recommendation-poster {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    filter: brightness(50%);
+  }
+  
+  .recommendation-info {
+    position: absolute;
+    bottom: 20px; /* 화면 하단에서 20px 위로 위치 */
+    left: 50%; /* 가로 중앙 정렬 */
+    transform: translateX(-50%); /* 가운데 정렬 */
+    color: white;
+    text-align: center;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+  }
+  
+  .recommendation-info h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .recommendation-info p {
+    font-size: 14px;
+    max-width: 80%; /* 가로 크기 조절 */
+    margin: 0 auto; /* 가운데 정렬 */
+  }

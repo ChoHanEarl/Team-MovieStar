@@ -1,0 +1,498 @@
+
+  
+  /* 최상단 추천 영화 컨테이너 */
+  .top-recommendation-container {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+  
+  /* 최상단 추천 영화 슬라이드 */
+  .top-recommendation {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 100%; /* 기본적으로 화면 밖으로 이동 */
+    opacity: 0;
+    transition: all 0.8s ease-in-out; /* 슬라이딩 및 페이드 효과 */
+  }
+  
+  /* 활성 슬라이드 */
+  .top-recommendation.active {
+    left: 0; /* 화면 안으로 이동 */
+    opacity: 1;
+  }
+  
+  /* 비활성 슬라이드 (이전 슬라이드) */
+  .top-recommendation.inactive {
+    left: -100%; /* 이전 슬라이드는 화면 밖으로 이동 */
+    opacity: 0;
+  }
+  
+  .top-recommendation-poster {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    filter: brightness(50%);
+  }
+  
+  .recommendation-info {
+    position: absolute;
+    bottom: 20px; /* 화면 하단에서 20px 위로 위치 */
+    left: 50%; /* 가로 중앙 정렬 */
+    transform: translateX(-50%); /* 가운데 정렬 */
+    color: white;
+    text-align: center;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+  }
+  
+  .recommendation-info h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .recommendation-info p {
+    font-size: 14px;
+    max-width: 80%; /* 가로 크기 조절 */
+    margin: 0 auto; /* 가운데 정렬 */
+  }
+  
+  
+  /* 슬라이더 스타일 */
+  .slider-section {
+    margin: 40px 0;
+  }
+  
+  .slider-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+    text-align: left;
+    padding-left: 20px;
+  }
+  
+  .slider-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .slider {
+    display: flex;
+    overflow-x: auto;
+    padding: 20px 0;
+    scrollbar-width: none;
+  }
+  
+  .slider::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .slider-item {
+    flex: 0 0 auto;
+    width: 200px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  
+  .slider-item img {
+    width: 100%;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+  }
+  
+  .slider-item img:hover {
+    transform: scale(1.1);
+  }
+  
+  /* 슬라이더 버튼 스타일 */
+  .slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.7); /* 반투명한 배경 */
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    font-size: 24px; /* 화살표 크기 */
+    transition: none; /* 호버 효과 제거 */
+  }
+  
+  .slider-btn.left {
+    left: 10px;
+  }
+  
+  .slider-btn.right {
+    right: 10px;
+  }
+  
+  .slider-btn span {
+    display: inline-block;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  
+   /* 
+    현재 사용 x
+   상세 페이지 스타일 
+  .movie-detail {
+    text-align: center;
+    background-color: #121212;
+    color: white;
+    min-height: 100vh;
+  }
+  
+  .detail-container {
+    padding: 40px;
+    
+    margin-left: 10%;
+    background: linear-gradient(to right, rgba(12,12,12,1), rgba(12,12,12,0));
+    height: 100vh;
+    text-align: left;
+  }
+  
+  .detail-container h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .detail-container p {
+    font-size: 18px;
+    line-height: 1.6;
+    margin: 10px 0;
+  }
+  
+  .detail-header span{
+    font-size: 16px;
+    margin-right: 7px;
+    color: lightgray;
+    font-weight:bolder
+  }
+  
+  .detail-information{
+    padding-bottom: 10px;
+    border-bottom: 1px solid gray;
+  }
+  
+  .detail-overview{
+    padding-bottom: 10px;
+    border-bottom: 1px solid gray;
+  }
+  
+   뒤로 가기 버튼 스타일
+  .back-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #555;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom: 20px;
+  }
+  
+  .back-button:hover {
+    background-color: #777;
+  }
+  
+  .back-button:focus {
+    outline: none;
+  } */
+  
+  /* ReviewForm 스타일 */
+  .review-form {
+    margin: 20px 0;
+    flex-direction: row;
+  }
+  
+  .review-input {
+    float: left;
+    width: 80%;
+    margin: 10px 0;
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  .review-submit-button {
+    padding: 9px 20px;
+    margin-top: 9px;
+    margin-left: 7px;
+    font-size: 16px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .review-submit-button:hover {
+    background-color: #45a049;
+  }
+
+  /* ReviewList 스타일 */
+  .review-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-height: 400px;
+    overflow-y: auto; 
+    scrollbar-width: none;
+  }
+  
+  .review-item-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid gray;
+  }
+  
+  .review-user {
+    font-weight: bold;
+  }
+  
+  .review-text {
+    flex-grow: 1;
+    margin-left: 10px;
+  }
+  
+  .review-date {
+    font-size: 0.9em;
+    color:lightgray;
+  }
+  
+  .review-edit-button,
+  .review-delete-button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-left: 5px;
+  }
+  
+  .review-edit-button:hover,
+  .review-delete-button:hover {
+    background-color: #d32f2f;
+  }
+  
+  .review-edit-form {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .review-edit-input {
+    margin: 0 10px;
+    padding: 5px;
+    flex-grow: 1;
+  }
+  
+  .review-update-button {
+    background-color: #2196f3;
+  }
+  
+  .review-cancel-button {
+    background-color: #555;
+  }
+  
+  /* StarRating 공용 스타일 */
+  .star-rating {
+    display: flex;
+    gap: 2px;
+    margin-left: 10px;
+  }
+  
+  /* 모달 섹션 */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    display: grid;
+    grid-template-columns: 1fr 2fr; /* 포스터와 상세정보 비율 */
+    gap: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    width: 70%; /* 너비를 적절히 설정 */
+    max-width: 800px; /* 최대 너비 제한 */
+    height: auto; /* 높이를 자동으로 설정 */
+    max-height: 80vh; /* 높이 제한 해제 */
+    overflow-y: auto;
+    scrollbar-width: none;
+    position: relative; /* 닫기 버튼과 정렬을 위해 */
+  }
+  
+  .modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 25px;
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+    z-index: 10; /* 모달 내부에서 상단 레이어 */
+  }
+  
+  .modal-close:hover {
+    transform: scale(1.2); /* 닫기 버튼 호버 효과 */
+  }
+  
+  
+  .modal-movie-poster {
+    width: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    flex-direction: column;
+    display: flex;
+    gap: 15px;
+  }
+  
+  .modal-movie-details {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* 상세정보 간 간격 */
+  }
+  
+  .modal-movie-details h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  
+  .modal-movie-details p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 5px 0;
+  }
+  
+  
+  .review-form {
+    display: flex;
+    flex-direction: column; /* 세로 방향으로 변경 */
+    gap: 10px;
+    margin: 20px 0;
+  }
+  
+  .review-form h3 {
+    margin-bottom: 10px;
+  }
+  
+  .star-rating {
+    align-self: flex-start; /* 왼쪽 정렬 */
+    margin-bottom: 10px;
+  }
+  
+  .review-input-container {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+  }
+  
+  .review-input {
+    flex-grow: 1;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+  }
+  
+  .review-submit-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  
+  /* 리뷰 리스트 반응형 그리드 */
+  .review-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+  }
+  
+  .review-item-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #2b2b2b;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  }
+  
+  .review-user {
+    font-weight: bold;
+  }
+  
+  .review-text {
+    flex-grow: 1;
+    word-wrap: break-word;
+  }
+  
+  .review-date {
+    font-size: 0.9em;
+    color: lightgray;
+  }
+  
+  .review-edit-button,
+  .review-delete-button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-left: 5px;
+  }
+  
+  /* 상세페이지 댓글 더보기 버튼 */
+  .load-more-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .load-more-button {
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .load-more-button:hover {
+    background-color: #444;
+  }
