@@ -5,6 +5,8 @@ import { AppContext } from "../context/AppContext.js";
 import MovieDetail from "../components/MovieDetail.js";
 import MovieSlider from "../components/MovieSlider.js";
 import { AccountCircle } from '@mui/icons-material';
+import GenreList from "./list/GenreList.js";
+
 
 import "../css/main/Header.css"
 import "../css/main/TopRecommendation.css"
@@ -155,6 +157,8 @@ const TopRecommendation = ({ movies,onMovieSelect }) => {
             placeholder="Search Movies..."
             onChange={(e) => handleSearch(e.target.value)}
             />
+
+            <GenreList />
         </div>
         {/* 검색 결과 또는 기본 영화 리스트 조건부 렌더링 */}
         {searchQuery && filteredMovies.length > 0 ? (

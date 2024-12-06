@@ -2,6 +2,7 @@ package com.korea.moviestar.dto;
 
 import java.util.Date;
 
+import com.korea.moviestar.entity.MovieEntity;
 import com.korea.moviestar.entity.ReviewEntity;
 import com.korea.moviestar.entity.UserEntity;
 import com.mysql.cj.x.protobuf.MysqlxCrud.Find;
@@ -25,17 +26,17 @@ public class ReviewDTO {
 	
 	public ReviewDTO(ReviewEntity entity) {
 		this.reviewId = entity.getReviewId();
-		this.movieId = entity.getMovieId();
+		this.movieId = entity.getMovie().getMovieId();
 		this.userId = entity.getUser().getUserId();
 		this.reviewRating = entity.getReviewRating();
 		this.reviewContent = entity.getReviewContent();
 		this.reviewDate = entity.getReviewDate();
 	}
 	
-	public static ReviewEntity toEntity(ReviewDTO dto, UserEntity user) {
+	public static ReviewEntity toEntity(ReviewDTO dto, UserEntity user, MovieEntity movie) {
 		return ReviewEntity.builder()
 					.reviewId(dto.getReviewId())
-					.movieId(dto.getMovieId())
+					.movie(movie)
 					.user(user)
 					.reviewRating(dto.getReviewRating())
 					.reviewContent(dto.getReviewContent())

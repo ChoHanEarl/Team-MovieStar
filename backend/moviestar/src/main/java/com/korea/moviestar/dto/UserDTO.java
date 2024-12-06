@@ -2,6 +2,7 @@ package com.korea.moviestar.dto;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.korea.moviestar.entity.UserEntity;
 
@@ -31,17 +32,8 @@ public class UserDTO {
 		this.userName = entity.getUserName();
 		this.userEmail = entity.getUserEmail();
 		this.userPwd = entity.getUserPwd();
-		this.userLikeList = entity.getUserLikeList();
+		this.userLikeList = entity.getUserLikeList().stream().map(movie -> movie.getMovieId()).collect(Collectors.toSet());
 	}
 	
-	public static UserEntity toEntity(UserDTO dto) {
-		return UserEntity.builder()
-					.userId(dto.getUserId())
-					.userNick(dto.getUserNick())
-					.userName(dto.getUserName())
-					.userEmail(dto.getUserEmail())
-					.userPwd(dto.getUserPwd())
-					.userLikeList(dto.getUserLikeList())
-					.build();
-	}
+	
 }

@@ -2,9 +2,8 @@ package com.korea.moviestar.entity;
 
 import java.util.Set;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -17,23 +16,24 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@Table(name = "user")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserEntity {
+@Table(name = "movie")
+public class MovieEntity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int userId;
-	private String userName;
-	private String userNick;
-	private String userEmail;
-	private String userPwd;
+	int movieId;
+	String movieName;
 	@ManyToMany
 	@JoinTable(
-			name = "user_like_list",
-			joinColumns = @JoinColumn(name = "user_id"),
-			inverseJoinColumns = @JoinColumn(name = "movie_id")
+			name = "movie_theme_table",
+			joinColumns = @JoinColumn(name="movie_id"),
+			inverseJoinColumns = @JoinColumn(name = "theme_id")
 	)
-	private Set<MovieEntity> userLikeList;
+	Set<ThemeEntity> movieTheme;
+	String movieOpDate;
+	double movieScore;
+	String moviePoster;
+	@Column(length = 65535)
+	String movieOverview;
 }

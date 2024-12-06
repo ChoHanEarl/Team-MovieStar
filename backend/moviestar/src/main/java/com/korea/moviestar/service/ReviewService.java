@@ -7,9 +7,12 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.korea.moviestar.dto.ReviewDTO;
+import com.korea.moviestar.entity.MovieEntity;
 import com.korea.moviestar.entity.ReviewEntity;
 import com.korea.moviestar.entity.UserEntity;
+import com.korea.moviestar.repo.MovieRepository;
 import com.korea.moviestar.repo.ReviewRepository;
+import com.korea.moviestar.repo.ThemeRepository;
 import com.korea.moviestar.repo.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class ReviewService {
 	private final ReviewRepository repository;
 	private final UserRepository users;
+	private final MovieRepository movies;
 	
 	public List<ReviewDTO> findAll(){
 		List<ReviewEntity> entities = repository.findAll();
@@ -35,19 +39,29 @@ public class ReviewService {
 		return null;
 	}
 	
+	public List<ReviewDTO> findByMovieId(int movieId){
+		Optional<MovieEntity> origin = movies.findById(movieId);
+		if(origin.isPresent()) {
+			List<ReviewEntity> entities = repository.findByMovieMovieId(movieId);
+			return entities.stream().map(ReviewDTO::new).collect(Collectors.toList());
+		}
+		return null;
+	}
+	
 	public ReviewDTO create(String userId, ReviewDTO dto) {
 		int user = Integer.parseInt(userId);
-		Optional<UserEntity> origin = users.findById(user);
-		if(origin.isPresent()) {
+		Optional<UserEntity> originUser = users.findById(user);
+		Optional<MovieEntity> originMovie = movies.findById(dto.getMovieId());
+		if(originUser.isPresent() && originMovie.isPresent()) {
 			dto.setUserId(user);
-			ReviewEntity entity = ReviewDTO.toEntity(dto, origin.get());
+			ReviewEntity entity = ReviewDTO.toEntity(dto, originUser.get(), originMovie.get());
 			return new ReviewDTO(repository.save(entity));
 		}
 		return null;
 	}
 	
-	public ReviewDTO update(ReviewDTO dto) {
-		Optional<ReviewEntity> origin = repository.findById(dto.getReviewId());
+	public ReviewDTO update(int reviewId, ReviewDTO dto) {
+		Optional<ReviewEntity> origin = repository.findById(reviewId);
 		if(origin.isPresent()) {
 			 ReviewEntity newReview = origin.get();
 			 newReview.setReviewRating(dto.getReviewRating());
@@ -55,6 +69,15 @@ public class ReviewService {
 			 return new ReviewDTO(repository.save(newReview));
 		}
 		return null;
+	}
+	
+	public boolean delete(int reviewId) {
+		Optional<ReviewEntity> origin = repository.findById(reviewId);
+		if(origin.isPresent()) {
+			repository.delete(origin.get());
+			return true;
+		}
+		return false;
 	}
 	
 }
