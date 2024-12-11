@@ -2,7 +2,7 @@
     position: fixed; /* 상단에 고정 */
     top: 80px;
     width: 100%; /* 고정된 너비 */
-    margin: 0 auto; /* 가운데 정렬 */
+    margin: 5px auto; /* 가운데 정렬 */
     height: 5%;
     background-color: #333;
     display: flex;

@@ -146,6 +146,7 @@ const TopRecommendation = ({ movies,onMovieSelect }) => {
           <img src={logo} className="logo" onClick={handleLogoClick}/>
             {/* 영화 검색 입력창 */}
             <input
+            className="search-container"
             type="text"
             placeholder="Search Movies..."
             onChange={(e) => handleSearch(e.target.value)}
@@ -160,6 +161,7 @@ const TopRecommendation = ({ movies,onMovieSelect }) => {
                 <button onClick={navigateToLoginScreen}>로그인</button>
             )}
         </div>
+
         {/* 검색 결과 또는 기본 영화 리스트 조건부 렌더링 */}
         {searchQuery && filteredMovies.length > 0 ? (
           <MovieSlider 

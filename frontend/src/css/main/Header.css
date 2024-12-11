@@ -12,13 +12,23 @@
 }
 
 .main-header input {
-  margin-right: 30px;
+  margin: 20px;
+  justify-content: center;
+  width: 500px;
+}
+
+.search-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
 }
 
 .logo {
   width: 250px;
+  height: auto;
   cursor: pointer;
 }
+
 
 .main-header button {
   padding: 10px 20px;
@@ -28,6 +38,7 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  
   /* 버튼의 위치를 flexbox로 제어 */
 }
 

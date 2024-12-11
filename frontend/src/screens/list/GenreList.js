@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "../../css/main/GenreList.css"
 
+
 const GenreList = () => {
   const [genres, setGenres] = useState([]); // 장르 데이터
   const [movies, setMovies] = useState({}); // 장르별 영화 데이터 (객체 형태)
