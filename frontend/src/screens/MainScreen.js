@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchPopularMovies, fetchNowPlayingMovies, fetchTopRatedMovies, searchMovies } from "../api/tmdb.js";
+import { fetchPopularMovies, fetchNowPlayingMovies, fetchTopRatedMovies, searchMovies, fetchMoviesByGenre } from "../api/tmdb.js";
 import { AppContext } from "../context/AppContext.js";
 import MovieDetail from "../components/MovieDetail.js";
 import MovieSlider from "../components/MovieSlider.js";
@@ -86,24 +86,24 @@ const TopRecommendation = ({ movies, onMovieSelect }) => {
     const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
     const BASE_URL = "https://api.themoviedb.org/3";
 
-    const fetchMoviesByGenre = async (genreId) => {
-      try {
-        const response = await axios.get(`${BASE_URL}/discover/movie`, {
-          params: {
-            api_key: API_KEY,
-            with_genres: genreId,
-            language: "ko-KR",
-            sort_by: "popularity.desc",
-          },
-        });
-        setMovies((prevMovies) => ({
-          ...prevMovies,
-          [genreId]: response.data.results,
-        }));
-      } catch (error) {
-        console.error("Error fetching movies by genre:", error);
-      }
-    };
+    // const fetchMoviesByGenre = async (genreId) => {
+    //   try {
+    //     const response = await axios.get(`${BASE_URL}/discover/movie`, {
+    //       params: {
+    //         api_key: API_KEY,
+    //         with_genres: genreId,
+    //         language: "ko-KR",
+    //         sort_by: "popularity.desc",
+    //       },
+    //     });
+    //     setMovies((prevMovies) => ({
+    //       ...prevMovies,
+    //       [genreId]: response.data.results,
+    //     }));
+    //   } catch (error) {
+    //     console.error("Error fetching movies by genre:", error);
+    //   }
+    // };
   
     const handleNavClick = (genreId) => {
       fetchMoviesByGenre(genreId);
