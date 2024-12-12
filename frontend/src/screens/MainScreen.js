@@ -264,8 +264,24 @@ const TopRecommendation = ({ movies, onMovieSelect }) => {
               movies={topRatedMovies} 
               onMovieSelect={handleMovieSelect} 
             />
+            {/* 장르별 영화 리스트 */}
+          <div className="content">
+            {genres.map((genre) => (
+              <div 
+                key={genre.id} 
+                ref={(el) => (sectionsRef.current[genre.id] = el)}
+              >
+                <MovieSlider
+                  title={genre.name}
+                  movies={movies[genre.id] || []}
+                  onMovieSelect={handleMovieSelect}
+                />
+              </div>
+            ))}
+          </div>
+            
             {/* 콘텐츠 */}
-            <div className="content">
+            {/* <div className="content">
             {genres.map((genre) => (
               <div
                 key={genre.id}
@@ -287,7 +303,7 @@ const TopRecommendation = ({ movies, onMovieSelect }) => {
                 </div>
               </div>
             ))}
-            </div>
+            </div> */}
           </>
         )}
   
