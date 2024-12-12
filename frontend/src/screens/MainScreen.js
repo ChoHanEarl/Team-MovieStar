@@ -210,7 +210,7 @@ const TopRecommendation = ({ movies, onMovieSelect }) => {
   
     return (
       <div className="main-page">
-        <div >
+        <div className="header-navbar">
         <header className="main-header">
           <img src={logo} className="main-logo" onClick={handleLogoClick}/>
             {/* 영화 검색 입력창 */}
@@ -255,6 +255,7 @@ const TopRecommendation = ({ movies, onMovieSelect }) => {
         ) : (
           <>
             {/* 추천 섹션 및 다양한 카테고리 영화 슬라이더 */}
+            <div className="movie-list">
             <TopRecommendation 
               movies={popularMovies} 
               onMovieSelect={handleMovieSelect} 
@@ -289,6 +290,7 @@ const TopRecommendation = ({ movies, onMovieSelect }) => {
               </div>
             ))}
           </div>
+            </div>
             
             {/* 콘텐츠 */}
             {/* <div className="content">

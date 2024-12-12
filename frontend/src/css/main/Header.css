@@ -3,6 +3,7 @@
   background-color: #111;
   flex-direction: column;
   text-align: center;
+  margin-top: 150px;
 }
 
 .main-header {
@@ -15,7 +16,7 @@ padding: 15px 20px;
 display: flex;
 align-items: center;
 justify-content: space-between;
-border-bottom: 3px solid #ddd;
+border-bottom: 1px solid #ddd;
 }
 
 .main-header h1 {
@@ -58,4 +59,15 @@ border-bottom: 3px solid #ddd;
 
 .main-header button:hover {
   background-color: #a3151d; /* 호버 시 어두운 색상 */
+}
+
+.header-navbar {
+  width: 100%;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+}
+
+.movie-list {
+  margin-top: 500;
 }

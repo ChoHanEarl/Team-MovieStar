@@ -1,5 +1,6 @@
 /* 최상단 추천 영화 컨테이너 */
 .top-recommendation-container {
+  
     position: relative;
     width: 100%;
     height: 400px;
@@ -62,3 +63,5 @@
     max-width: 80%; /* 가로 크기 조절 */
     margin: 0 auto; /* 가운데 정렬 */
   }
+
+  
