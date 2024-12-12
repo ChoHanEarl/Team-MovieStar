@@ -54,10 +54,10 @@ const FindId = () => {
 
     return (
         <div className="find-page">
-            <header className="header">
-                <img src={logo} className="header-logo" onClick={handleLogoClick} />
+            <header className="find-header">
+                <img src={logo} className="find-header-logo" onClick={handleLogoClick} />
             </header>
-            <div className="body">
+            <div className="find-body">
                 <div className="find-id-container">
                     <h2>아이디 찾기</h2>
                     <form onSubmit={handleFindId}>

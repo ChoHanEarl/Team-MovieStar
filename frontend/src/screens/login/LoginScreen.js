@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react"
+import React, { useState, useContext, useEffect } from "react"
 import { AppContext } from "../../context/AppContext"
 import { Link, useNavigate } from "react-router-dom"
 import "../../css/login/LoginScreen.css"
@@ -75,64 +75,40 @@ const LoginScreen = () => {
      e.preventDefault()
 
      try {
-       const response = await axios.post("/user/signin", formData)
-       const data = response.data;
+       const response = await axios.post(
+        "/user/signin",
+        { userName: formData.userName, userPwd: formData.userPwd },
+        { withCredentials: true } // 쿠키 전송 활성화
+      )
+       if(response.status === 200) {
+        const userData = response.data;
+        console.log("로그인 성공:", userData)
 
-       // 토큰 저장
-       if(data.token) {
-         localStorage.setItem("token", data.token)
+        // 사용자 정보 Context에 저장
+        setUser({
+          userId: userData.userId,
+          userEmail: userData.userEmail,
+          userNick: userData.userNick,
+          userName: userData.userName
+        })
 
-         // 사용자 정보 Context에 저장
-         setUser({
-           userId: data.userId,
-           userEmail: data.userEmail,
-           userNick: data.userNick,
-           userName: data.userName
-         })
-
-         // 로그인 성공 시 메인 화면으로 이동
-         navigate("/home")
-         } else {
-         setError("Login failed: Cannot find token")
+        // 로그인 성공 시 메인 화면으로 이동
+        alert("로그인 성공")
+        navigate("/home")
        }
      } catch (error) {
-       console.error("error during login:", error)
+       console.error("로그인 실패: ", error)
        setError("아이디 또는 비밀번호가 일치하지 않습니다.")
      }
-
-     // localStorage에서 유저 정보 가져오기
-     const storedUser = JSON.parse(
-       localStorage.getItem(
-         Object.keys(window.localStorage).find(
-         key => JSON.parse(localStorage.getItem(key)).userName === formData.userName
-       )))
-
-     // 유저 정보 확인
-     if (
-       storedUser && 
-       storedUser.userPwd=== formData.userPwd
-     ) {
-       // 로그인 성공 시
-       setUser({ 
-         userName: storedUser.userName,
-         userEmail: storedUser.userEmail,
-         userNick: storedUser.userNick,
-      userLikeList: storedUser.userLikeList,
-       }) // 사용자 정보를 Context에 저장
-       navigate("/home"); // MainScreen으로 이동
-      } else {
-      // 에러 메시지 출력
-      setError("아이디 또는 비밀번호가 일치하지 않습니다.");
-    }
   };
 
   return (
     <div className="login-page">
-      <header className="header">
-        <img src={logo} className="header-logo" onClick={handleLogoClick} />
+      <header className="login-header">
+        <img src={logo} className="login-header-logo" onClick={handleLogoClick} />
       </header>
 
-      <div className="body">
+      <div className="login-body">
         <div className="login-box">
           <h2>로그인</h2>
           {/* 로그인 폼 */}

@@ -1,30 +1,78 @@
-body {
-  margin: 0;
-  font-family: 'Helvetica', Arial, sans-serif;
+.login-page {
+  height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #121212; /* 어두운 배경 */
-  color: #f5f5f5; /* 밝은 텍스트 */
+  flex-direction: column;
 }
 
-.login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* 헤더 */
+.login-header {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 100%;
+  background-color: #000;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-bottom: 3px solid #ddd;
+}
+
+.login-header-logo {
+  max-width: 200px;
+  width: auto;
+  height: auto;
+  cursor: pointer;
+}
+
+
+/* 바디 */
+.login-body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-image: 
+          linear-gradient(to left, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)),
+          url("../../../images/LoginBackground.jpg");
+  background-size: cover;       
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 .login-box {
-  width: 100%;
-  max-width: 400px;
-  background: #1e1e1e; /* 더 어두운 컨테이너 */
+  position: absolute; /* 절대 위치 지정 */
+  top: 50%; /* 화면의 세로 중앙 */
+  right: 5%; /* 우측 여백 */
+  transform: translateY(-50%); /* 세로 중앙 정렬 */
+  width: 400px; /* 기본 너비 */
+  max-width: 90%; /* 화면 크기에 따라 너비 제한 */
+  background-color: #2c2c2c; /* 더 어두운 배경 */
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8); /* 부드러운 그림자 */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8); /* 그림자 효과 */
+  z-index: 2; /* 배경보다 앞에 표시 */
 }
+
+/* 반응형: 작은 화면에서 중앙에 배치 */
+
+@media (max-width: 768px) {
+  .login-box {
+    right: 5%; 
+    width: 90%; 
+  }
+}
+
+/* 반응형 디자인 */
+/*
+@media (max-aspect-ratio: 16/9) {
+  .login-body {
+      background-size: auto 100%;
+  }
+}
+*/
 
 h2 {
   margin-bottom: 20px;
@@ -140,196 +188,3 @@ h2 {
 .links a:hover {
   text-decoration: underline;
 }
-
-/* FindId.css */
-.find-id-container {
-  width: 100%;
-  max-width: 400px;
-  margin: 50px auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.find-id-container h2 {
-  margin-bottom: 20px;
-  font-size: 24px;
-  color: #333;
-}
-
-.input-group {
-  margin-bottom: 20px;
-  text-align: left;
-}
-
-.input-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-size: 14px;
-  color: #555;
-}
-
-.input-group input {
-  width: 100%;
-  padding: 10px;
-  font-size: 14px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-.find-id-button {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.find-id-button:hover {
-  background-color: #0056b3;
-}
-
-.result-message {
-  margin-top: 20px;
-  font-size: 14px;
-  color: #333;
-}
-
-/* FindPassword.css */
-.find-password-container {
-  max-width: 400px;
-  margin: 50px auto;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  text-align: center;
-  background-color: #f9f9f9;
-}
-
-.find-password-container h2 {
-  margin-bottom: 20px;
-  font-size: 24px;
-  color: black;
-}
-
-.find-password-container form {
-  display: flex;
-  flex-direction: column;
-}
-
-.find-password-container label {
-  margin-bottom: 5px;
-  text-align: left;
-  font-size: 14px;
-  color: #555;
-}
-
-.find-password-container input {
-  margin-bottom: 15px;
-  padding: 10px;
-  font-size: 14px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  width: 90%;
-  max-width: 400px; /* 최대 400px로 제한 */
-}
-
-
-.find-password-container button {
-  padding: 10px;
-  font-size: 16px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.find-password-container button:hover {
-  background-color: #0056b3;
-}
-
-.find-password-container p {
-  margin-top: 15px;
-  font-size: 14px;
-  color: #333;
-}
-
-/* Signup.css */
-.signup-container {
-  max-width: 400px; /* 컨테이너 최대 너비 */
-  margin: 50px auto; /* 가운데 정렬 */
-  padding: 20px;
-  border: 1px solid #ddd; /* 테두리 */
-  border-radius: 8px; /* 모서리 둥글게 */
-  background-color: #f9f9f9; /* 배경색 */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 약간의 그림자 */
-  text-align: center;
-}
-
-.signup-container h2 {
-  margin-bottom: 20px;
-  font-size: 24px;
-  color: #333; /* 제목 텍스트 색상 */
-}
-
-.signup-container form {
-  display: flex;
-  flex-direction: column; /* 세로 정렬 */
-  align-items: center;
-}
-
-.signup-container label {
-  margin-bottom: 5px;
-  text-align: left;
-  font-size: 14px;
-  color: #555; /* 레이블 텍스트 색상 */
-  width: 100%; /* 입력 필드와 동일한 너비 */
-}
-
-.signup-container input {
-  margin-bottom: 15px;
-  padding: 10px;
-  font-size: 14px;
-  border: 1px solid #ddd; /* 입력 필드 테두리 */
-  border-radius: 4px; /* 입력 필드 모서리 둥글게 */
-  width: 100%; /* 입력 필드 너비 */
-  box-sizing: border-box; /* 패딩 포함 크기 계산 */
-}
-
-.signup-container input:focus {
-  border-color: #007bff; /* 포커스 시 테두리 색상 */
-  outline: none; /* 기본 포커스 스타일 제거 */
-}
-
-.signup-container button {
-  padding: 10px;
-  font-size: 16px;
-  font-weight: bold;
-  color: white;
-  background-color: #007bff; /* 기본 버튼 색상 */
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease; /* 부드러운 색상 전환 */
-}
-
-.signup-container button:hover {
-  background-color: #0056b3; /* 호버 시 어두운 색상 */
-}
-
-.signup-container p {
-  margin-top: 15px;
-  font-size: 14px;
-  color: #333;
-}
-
-
-

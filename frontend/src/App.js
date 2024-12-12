@@ -5,7 +5,7 @@ import { AppContext } from "./context/AppContext.js";
 import FirstPage from "./screens/FirstScreen.js";
 import HomePage from "./screens/MainScreen.js";
 import LoginScreen from "./screens/login/LoginScreen.js";
-import FindIdOrPassword from "./screens/login/FindIdOrPassword.js"
+import FindIdOrPassword from "./screens/login/FindIdOrPassword.js";
 import Signup from "./screens/login/Signup.js";
 import Mypage from "./screens/MyPage.js";
 

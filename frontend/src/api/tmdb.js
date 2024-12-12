@@ -16,6 +16,7 @@ const instance = axios.create({
 export const fetchPopularMovies = async () => {
   try {
     const response = await instance.get("/movie/popular"); // 인기 영화 엔드포인트 호출
+    console.log(response.data.results)
     return response.data.results; // 영화 데이터 반환
   } catch (error) {
     console.error("Error fetching popular movies:", error);
@@ -70,3 +71,41 @@ export const fetchTopRatedMovies = async () => {
     return [];
   }
 };
+
+//출연진 목록을 가져오는 함수
+export const fetchMovieCredits = async (movieId) => {
+  try {
+    const response = await instance.get(`/movie/${movieId}/credits`);
+    console.log("API 응답 데이터:", response.data); // 응답 데이터 구조 확인
+    return response.data; // cast 배열을 가져오는 대신 전체 데이터를 반환
+  } catch (error) {
+    console.error("Error fetching movie credits:", error);
+    return { cast: [] }; // 오류 발생 시 기본값 설정
+  }
+};
+
+// // 장르 목록 가져오는 함수
+// export const fetchGenres = async () => {
+//   try {
+//     const response = await instance.get("/genre/movie/list");
+//     return response.data.genres; // 장르 목록 반환
+//   } catch (error) {
+//     console.error("Error fetching genres:", error);
+//     return [];
+//   }
+// };
+
+// // 특정 장르의 영화 가져오는 함수
+// export const fetchMoviesByGenre = async (genreId) => {
+//   try {
+//     const response = await instance.get("/discover/movie", {
+//       params: {
+//         with_genres: genreId, // 특정 장르 ID 필터
+//       },
+//     });
+//     return response.data.results; // 영화 데이터 반환
+//   } catch (error) {
+//     console.error("Error fetching movies by genre:", error);
+//     return [];
+//   }
+// };

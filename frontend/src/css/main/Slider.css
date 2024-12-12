@@ -1,6 +1,6 @@
 /* 슬라이더 스타일 */
 .slider-section {
-    margin: 40px 0;
+    margin: 20px;
   }
   
   .slider-title {
@@ -14,8 +14,6 @@
     position: relative;
     display: flex;
     align-items: center;
-    max-width: 100vw;
-    width: 100%;
   }
   
   .slider {

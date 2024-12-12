@@ -1,0 +1,51 @@
+/* 영화 포스터 컨테이너에 상대 위치 지정 */
+.movie-poster-container {
+    position: relative;
+  }
+  
+  /* 예고편 재생 버튼 스타일 */
+  .modal-movie-poster-container {
+    display: flex;
+    flex-direction: column; /* 세로 배치 */
+    align-items: center; /* 중앙 정렬 */
+    gap: 10px; /* 포스터와 버튼 사이 간격 */
+  }
+  
+  .trailer-play-button {
+    width: fit-content; /* 버튼 크기를 내용에 맞춤 */
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .trailer-play-button:hover {
+    background-color: rgba(0, 0, 0, 0.9);
+  }
+  
+  
+  /* 트레일러 모달 스타일 */
+  .trailer-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .trailer-modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 800px;
+    position: relative;
+  }

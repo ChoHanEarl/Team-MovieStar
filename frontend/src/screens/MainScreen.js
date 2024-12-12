@@ -1,18 +1,19 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchPopularMovies, fetchNowPlayingMovies, fetchTopRatedMovies, searchMovies } from "../api/tmdb.js";
 import { AppContext } from "../context/AppContext.js";
 import MovieDetail from "../components/MovieDetail.js";
 import MovieSlider from "../components/MovieSlider.js";
 import logo from "../logo/logo.png"
-import GenreList from "./list/GenreList.js"
+import axios from "axios";
 
 import '../css/main/MyPage.css';
 import "../css/main/Header.css"
 import "../css/main/TopRecommendation.css"
+import "../css/main/GenreList.css"
 
 // 최상단 추천 영화 섹션 - 자동으로 슬라이딩되는 배너 컴포넌트
-const TopRecommendation = ({ movies,onMovieSelect }) => {
+const TopRecommendation = ({ movies, onMovieSelect }) => {
     // 현재 보여줄 영화의 인덱스 상태 관리
     const [currentIndex, setCurrentIndex] = useState(0);
   
@@ -75,6 +76,42 @@ const TopRecommendation = ({ movies,onMovieSelect }) => {
     // 선택된 영화 모달 상태 관리
     const [selectedMovie, setSelectedMovie] = useState(null);
 
+    // 장르 관련 상태 관리
+    const [genres, setGenres] = useState([]);
+    const [movies, setMovies] = useState({});
+    const [error, setError] = useState(null);
+    const sectionsRef = useRef({});
+
+    // TMDB
+    const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
+    const BASE_URL = "https://api.themoviedb.org/3";
+
+    const fetchMoviesByGenre = async (genreId) => {
+      try {
+        const response = await instance.get("/discover/movie", {
+          params: {
+            with_genres: genreId,
+            sort_by: "popularity.desc",
+          },
+        });
+  
+        setMovies((prevMovies) => ({
+          ...prevMovies,
+          [genreId]: response.data.results,
+        }));
+      } catch (error) {
+        console.error("Error fetching movies by genre:", error);
+      }
+    };
+  
+    const handleNavClick = (genreId) => {
+      fetchMoviesByGenre(genreId);
+      const section = sectionsRef.current[genreId];
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth" });
+      }
+    };
+
     // 화면 이동 함수 정의
     const navigate = useNavigate()
 
@@ -117,6 +154,27 @@ const TopRecommendation = ({ movies,onMovieSelect }) => {
       fetchMovies();
     }, []);
 
+    const instance = axios.create({
+      baseURL: BASE_URL,
+      params: {
+        api_key: API_KEY,
+        language: "ko-KR",
+      },
+    });
+  
+    const fetchGenres = async () => {
+      try {
+        const response = await instance.get("/genre/movie/list");
+        setGenres(response.data.genres);
+      } catch (error) {
+        setError("장르 목록을 가져오는 중 문제가 발생했습니다.");
+      }
+    };
+  
+    useEffect(() => {
+      fetchGenres();
+    }, []);
+
     // 영화 검색 핸들러
     const handleSearch = async (query) => {
       setSearchQuery(query);
@@ -141,12 +199,12 @@ const TopRecommendation = ({ movies,onMovieSelect }) => {
     };
   
     return (
-      <div className="app">
-        <div className="main-header">
-          <img src={logo} className="logo" onClick={handleLogoClick}/>
+      <div className="main-page">
+        <div >
+        <header className="main-header">
+          <img src={logo} className="main-logo" onClick={handleLogoClick}/>
             {/* 영화 검색 입력창 */}
             <input
-            className="search-container"
             type="text"
             placeholder="Search Movies..."
             onChange={(e) => handleSearch(e.target.value)}
@@ -160,6 +218,21 @@ const TopRecommendation = ({ movies,onMovieSelect }) => {
             ) : (
                 <button onClick={navigateToLoginScreen}>로그인</button>
             )}
+        </header>
+        <div>
+          {/* 네비게이션 바 */}
+          <nav className="nav-bar">
+            {genres.map((genre) => (
+              <button
+                key={genre.id}
+                onClick={() => handleNavClick(genre.id)}
+                className="nav-item"
+              >
+                {genre.name}
+              </button>
+            ))}
+          </nav>
+        </div>
         </div>
 
         {/* 검색 결과 또는 기본 영화 리스트 조건부 렌더링 */}
@@ -171,7 +244,6 @@ const TopRecommendation = ({ movies,onMovieSelect }) => {
           />
         ) : (
           <>
-            
             {/* 추천 섹션 및 다양한 카테고리 영화 슬라이더 */}
             <TopRecommendation 
               movies={popularMovies} 
@@ -192,7 +264,30 @@ const TopRecommendation = ({ movies,onMovieSelect }) => {
               movies={topRatedMovies} 
               onMovieSelect={handleMovieSelect} 
             />
-            <GenreList />
+            {/* 콘텐츠 */}
+            <div className="content">
+            {genres.map((genre) => (
+              <div
+                key={genre.id}
+                ref={(el) => (sectionsRef.current[genre.id] = el)}
+                className="genre-section"
+              >
+                <h2>{genre.name}</h2>
+                <div className="movies">
+                  {movies[genre.id]?.map((movie) => (
+                    <div key={movie.id} className="movie-card">
+                      <h3>{movie.title}</h3>
+                      <p>{movie.overview}</p>
+                      <img
+                        src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
+                        alt={movie.title}
+                      />
+                    </div>
+                  )) || <p>영화를 로드 중입니다...</p>}
+                </div>
+              </div>
+            ))}
+            </div>
           </>
         )}
   

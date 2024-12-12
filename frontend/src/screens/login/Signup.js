@@ -99,10 +99,10 @@ const Signup = () => {
 
   return (
       <div className="signup-page">
-        <header className="header">
-          <img src={logo} className="header-logo" onClick={handleLogoClick} />
+        <header className="signup-header">
+          <img src={logo} className="signup-logo" onClick={handleLogoClick} />
         </header>
-        <div className="body">
+        <div className="signup-body">
           <div className="signup-box">
             <h2>회원가입</h2>
             <form onSubmit={handleSubmit}>
