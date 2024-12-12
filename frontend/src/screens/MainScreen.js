@@ -88,13 +88,14 @@ const TopRecommendation = ({ movies, onMovieSelect }) => {
 
     const fetchMoviesByGenre = async (genreId) => {
       try {
-        const response = await instance.get("/discover/movie", {
+        const response = await axios.get(`${BASE_URL}/discover/movie`, {
           params: {
+            api_key: API_KEY,
             with_genres: genreId,
+            language: "ko-KR",
             sort_by: "popularity.desc",
           },
         });
-  
         setMovies((prevMovies) => ({
           ...prevMovies,
           [genreId]: response.data.results,
@@ -170,6 +171,15 @@ const TopRecommendation = ({ movies, onMovieSelect }) => {
         setError("장르 목록을 가져오는 중 문제가 발생했습니다.");
       }
     };
+
+    useEffect(() => {
+      // 장르 목록을 가져온 후 각 장르에 대해 영화 목록을 자동으로 로딩
+      if (genres.length > 0) {
+        genres.forEach((genre) => {
+          fetchMoviesByGenre(genre.id);
+        });
+      }
+    }, [genres]); // genres가 변경될 때마다 실행
   
     useEffect(() => {
       fetchGenres();
@@ -265,7 +275,7 @@ const TopRecommendation = ({ movies, onMovieSelect }) => {
               onMovieSelect={handleMovieSelect} 
             />
             {/* 장르별 영화 리스트 */}
-          <div className="content">
+          <div >
             {genres.map((genre) => (
               <div 
                 key={genre.id} 
