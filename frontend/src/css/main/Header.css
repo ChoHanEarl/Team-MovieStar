@@ -3,7 +3,7 @@
   background-color: #111;
   flex-direction: column;
   text-align: center;
-  margin-top: 150px;
+  margin-top: 180px;
 }
 
 .main-header {
@@ -66,8 +66,12 @@ border-bottom: 1px solid #ddd;
   position: fixed;
   z-index: 1000;
   top: 0;
+
 }
 
-.movie-list {
-  margin-top: 500;
+.genre-movie-list {
+
 }
+
+/* .movie-list {
+} */

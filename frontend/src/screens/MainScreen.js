@@ -276,7 +276,7 @@ const TopRecommendation = ({ movies, onMovieSelect }) => {
               onMovieSelect={handleMovieSelect} 
             />
             {/* 장르별 영화 리스트 */}
-          <div >
+          <div className="genre-movie-list">
             {genres.map((genre) => (
               <div 
                 key={genre.id} 
