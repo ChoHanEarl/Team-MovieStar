@@ -69,3 +69,32 @@ border-bottom: 1px solid #ddd;
 
 }
 
+.main-header button {
+  right: 100px; /* 우측 여백 */
+  padding: 10px 10px;
+  font-size: 14px;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 50px;
+}
+
+.mypage-button-main {
+  background-color: #007bff;
+}
+
+.mypage-button-main:hover {
+  background-color: #0056b3;
+}
+
+.logout-button-main,
+.login-button-main {
+  background-color: #d81f26;
+}
+
+.logout-button-main:hover,
+.login-button-main:hover {
+  background-color: #a3151d;
+}
+
