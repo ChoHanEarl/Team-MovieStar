@@ -129,7 +129,14 @@ const HomePage = () => {
 
     const section = sectionsRef.current[genreId];
     if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
+      const offsetTop = section.offsetTop; // section의 위쪽 위치
+      const scrollPosition = offsetTop - 150; // 100px 위로 올리기
+
+    // 원하는 위치로 스크롤
+    window.scrollTo({
+      top: scrollPosition, // 원하는 스크롤 위치로 이동
+      behavior: "smooth", // 부드럽게 스크롤
+    });
     }
   };
 
