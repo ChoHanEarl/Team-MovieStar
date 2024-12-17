@@ -86,14 +86,24 @@ const HomePage = () => {
     fetchMovies();
   }, []);
 
+  // 장르 목록 가져오기
   useEffect(() => {
-    // 장르 목록을 가져오는 함수 호출
-    const fetchGenresData = async () => {
-      const genreList = await fetchGenres();
-      setGenres(genreList); // 장르 목록을 상태에 저장
-    };
-    fetchGenresData();
-  }, []);
+    const loadGenres = async () => {
+      const genreList = await fetchGenres()
+      setGenres(genreList)
+      
+      // 각 장르의 영화 가져오기
+      genreList.forEach(async (genre) => {
+        const moviesByGenre = await fetchMoviesByGenre(genre.id)
+        setMovies((prevMovies) => ({
+          ...prevMovies,
+          [genre.id]: moviesByGenre
+        }))
+      })
+    }
+
+    loadGenres()
+  }, [])
 
   useEffect(() => {
     // 각 장르에 대해 영화 목록을 자동으로 로딩
