@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchPopularMovies, fetchNowPlayingMovies, fetchTopRatedMovies, searchMovies, fetchMoviesByGenre } from "../api/tmdb.js";
+import { fetchPopularMovies, fetchNowPlayingMovies, fetchTopRatedMovies, searchMovies, fetchMoviesByGenre, fetchGenres } from "../api/tmdb.js";
 import { AppContext } from "../context/AppContext.js";
 import MovieDetail from "../components/MovieDetail.js";
 import MovieSlider from "../components/MovieSlider.js";
@@ -162,15 +162,34 @@ const TopRecommendation = ({ movies, onMovieSelect }) => {
         language: "ko-KR",
       },
     });
+    
   
-    const fetchGenres = async () => {
-      try {
-        const response = await instance.get("/genre/movie/list");
-        setGenres(response.data.genres);
-      } catch (error) {
-        setError("장르 목록을 가져오는 중 문제가 발생했습니다.");
-      }
-    };
+    // const fetchGenres = async () => {
+    //   try {
+    //     const response = await instance.get("/genre/movie/list");
+    //     setGenres(response.data.genres);
+    //   } catch (error) {
+    //     setError("장르 목록을 가져오는 중 문제가 발생했습니다.");
+    //   }
+    // };
+
+    // const fetchMoviesByGenre = async (genreId) => {
+    //   try {
+    //     const response = await axios.get(`${API_KEY}/discover/movie`, {
+    //       params: {
+    //         api_key: API_KEY,
+    //         with_genres: genreId,
+    //         language: "ko-KR",
+    //         sort_by: "popularity.desc",
+    //       },
+    //     });
+    //     return response.data.results; // 영화 데이터 반환
+    //   } catch (error) {
+    //     console.error("Error fetching movies by genre:", error);
+    //     return []; // 오류 발생 시 빈 배열 반환
+    //   }
+    // };
+    
 
     useEffect(() => {
       // 장르 목록을 가져온 후 각 장르에 대해 영화 목록을 자동으로 로딩
@@ -179,11 +198,13 @@ const TopRecommendation = ({ movies, onMovieSelect }) => {
           fetchMoviesByGenre(genre.id);
         });
       }
-    }, [genres]); // genres가 변경될 때마다 실행
+    }, [genres]);
   
     useEffect(() => {
       fetchGenres();
     }, []);
+
+    
 
     // 영화 검색 핸들러
     const handleSearch = async (query) => {

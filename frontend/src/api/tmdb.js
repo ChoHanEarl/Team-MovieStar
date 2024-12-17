@@ -84,15 +84,42 @@ export const fetchMovieCredits = async (movieId) => {
   }
 };
 
-// 영화 장르별로 데이터를 가져오는 함수
+// 장르 목록을 가져오는 함수
+export const fetchGenres = async () => {
+  try {
+    const response = await instance.get("/genre/movie/list");
+    return response.data.genres;
+  } catch (error) {
+    console.error("Error fetching genres:", error);
+    return [];
+  }
+};
+
+// // 영화 장르별로 데이터를 가져오는 함수
+// export const fetchMoviesByGenre = async (genreId) => {
+//   try {
+//     const response = await axios.get(`${API_URL}/discover/movie`, {
+//       params: {
+//         api_key: API_KEY,
+//         with_genres: genreId,
+//         language: "ko-KR",
+//         sort_by: "popularity.desc",
+//       },
+//     });
+//     return response.data.results; // 영화 데이터 반환
+//   } catch (error) {
+//     console.error("Error fetching movies by genre:", error);
+//     return []; // 오류 발생 시 빈 배열 반환
+//   }
+// };
+
+// 장르별로 영화 데이터를 가져오는 함수
 export const fetchMoviesByGenre = async (genreId) => {
   try {
-    const response = await axios.get(`${API_URL}/discover/movie`, {
+    const response = await instance.get("/discover/movie", {
       params: {
-        api_key: API_KEY,
         with_genres: genreId,
-        language: "ko-KR",
-        sort_by: "popularity.desc",
+        sort_by: "popularity.desc", // 인기순 정렬
       },
     });
     return response.data.results; // 영화 데이터 반환
