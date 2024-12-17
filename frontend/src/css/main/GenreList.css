@@ -9,7 +9,7 @@
     gap: 1rem;
     /* box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);  */
     z-index: 1000;
-    margin-top: -5px;
+    margin-top: 0px;
 
     align-items: center;
     padding: 10px 0; /* 적당한 내외부 여백 */

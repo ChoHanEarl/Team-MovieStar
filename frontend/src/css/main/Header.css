@@ -3,7 +3,7 @@
   background-color: #111;
   flex-direction: column;
   text-align: center;
-  margin-top: 180px;
+  margin-top: 80px;
 }
 
 .main-header {
@@ -64,7 +64,7 @@ border-bottom: 1px solid #ddd;
 .header-navbar {
   width: 100%;
   position: fixed;
-  z-index: 1000;
+  z-index: 9999;
   top: 0;
 
 }
