@@ -1,0 +1,43 @@
+.App  {
+    height: 100vh;
+    background-image: 
+      linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), /* 그라데이션으로 이미지 끝부분을 흐리게 */
+      url('../../../images/background.jpg'); /* 배경 이미지 설정 */
+    background-size: cover; /* 배경 이미지 크기 */
+    background-position: center center; /* 배경 이미지 중앙 정렬 */
+    background-repeat: no-repeat; /* 배경 이미지 반복 방지 */
+    
+    
+
+    
+    /* Flexbox로 중앙 정렬 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .content {
+    background-color: rgba(0, 0, 0, 0.4); /* 반투명 검은색 배경 */
+    padding: 40px 60px; /* 내부 콘텐츠 여백 */
+    border-radius: 10px;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* 그림자 효과 */
+  }
+  
+
+  .btn {
+    padding: 10px 20px;
+    background-color: #443b38; /* 버튼 색상 */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    margin: 1px;
+  }
+  
+  .btn:hover {
+    background-color: #a59d9b; /* 버튼 hover 효과 */
+  }
+  
