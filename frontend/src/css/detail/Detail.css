@@ -1,0 +1,113 @@
+  /* 뒤로 가기 버튼 스타일 */
+  .back-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #555;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom: 20px;
+  }
+  
+  .back-button:hover {
+    background-color: #777;
+  }
+  
+  .back-button:focus {
+    outline: none;
+  }
+
+  /* 상세페이지 댓글 더보기 버튼 */
+.load-more-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.load-more-button {
+  padding: 10px 20px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.load-more-button:hover {
+  background-color: #444;
+}
+
+/* 출연진목록 */
+.actor-slider-container {
+  position: relative;
+  margin-top: 20px;
+}
+
+.slider-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+/* 기존 .actor-list 스타일 */
+.actor-list {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 10px 0;
+  margin: 10px 0;
+  scrollbar-width: thin;
+  scrollbar-color: #555 #2b2b2b;
+}
+
+/* h3 텍스트 스타일 분리 */
+.actor-list > h3 {
+  writing-mode: horizontal-tb;
+  transform: none;
+  text-orientation: mixed;
+  flex-shrink: 0; /* h3가 줄어들지 않도록 */
+  margin-right: 15px; /* 슬라이드와 간격 유지 */
+}
+
+
+.actor-list ul {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.actor-list li {
+  flex: 0 0 auto;
+  margin-right: 15px;
+  text-align: center;
+}
+
+.actor-list img {
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+}
+
+.slider-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.slider-button.left {
+  left: 0;
+}
+
+.slider-button.right {
+  right: 0;
+}

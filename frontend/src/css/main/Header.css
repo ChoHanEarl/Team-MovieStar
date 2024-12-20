@@ -1,0 +1,82 @@
+.main-page {
+  height: 300vh;
+  /* display: flex; */
+  flex-direction: column;
+  text-align: center;
+  margin-top: 100px;
+}
+
+.main-header {
+position: relative;
+top: 0;
+left: 0;
+width: 100%;
+background-color: #000;
+padding: 15px 20px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+border-bottom: 3px solid #ddd;
+}
+
+.main-header h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.main-header input {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #444;
+  border-radius: 4px;
+  background-color: #333;
+  color: #ddd;
+  flex-grow: 1;
+  margin: 0 20px;
+}
+
+.main-logo {
+  max-width: 200px;
+  width: auto;
+  height: auto;
+  cursor: pointer;
+}
+
+.main-header button {
+  right: 100px; /* 우측 여백 */
+  padding: 10px 10px;
+  font-size: 14px;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 50px;
+}
+
+.mypage-button-main {
+  background-color: #007bff;
+}
+
+.mypage-button-main:hover {
+  background-color: #0056b3;
+}
+
+.logout-button-main,
+.login-button-main {
+  background-color: #d81f26;
+}
+
+.logout-button-main:hover,
+.login-button-main:hover {
+  background-color: #a3151d;
+}
+
+.header-navbar {
+  width: 100%;
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+}
