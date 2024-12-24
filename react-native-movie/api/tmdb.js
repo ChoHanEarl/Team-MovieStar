@@ -82,3 +82,18 @@ export const fetchMovieCredits = async (movieId) => {
     return { cast: [] }; // 오류 발생 시 기본값 설정
   }
 };
+
+// 장르 목록 가져오기
+export const fetchGenres = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}genre/movie/list`, {
+      params: {
+        api_key: API_KEY,
+        language: 'ko-KR',
+      }
+    });
+    setGenres(response.data.genres);
+    } catch (error) {
+    console.error("Failed to fetch genres:", error);
+  }
+};

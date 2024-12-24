@@ -21,7 +21,7 @@ const LikeScreen = () => {
         <View style={styles.background}>
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <TouchableOpacity onPress={() => navigation.navigate('HomeStack')}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Home')}>
                         <Text style={styles.backbutton}>←</Text>
                     </TouchableOpacity>
                     <Text style={styles.text}>나의 찜 리스트</Text>

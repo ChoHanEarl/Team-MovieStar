@@ -37,6 +37,10 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
+    //Webflux
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	//thymeleaf
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 }
 
 tasks.named('test') {

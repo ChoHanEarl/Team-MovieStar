@@ -1,4 +1,4 @@
-import React, { useContext }from "react";
+import React, { useContext, useState, useEffect }from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "../screen/HomeScreen";
@@ -6,7 +6,7 @@ import MainScreen from "../screen/MainScreen";
 import DetailScreen from "../screen/DetailScreen";
 import LoginScreen from "../screen/LoginScreen";
 import SignupScreen from "../screen/SignupScreen";
-import FindIdScreen from "../component/FIndId";
+import FindIdScreen from "../component/FindId";
 import FindPwdScreen from "../component/FindPwd";
 import LikeScreen from "../screen/LikeScreen";
 import MypageScreen from "../screen/MypageScreen";
@@ -14,6 +14,9 @@ import {MaterialCommunityIcons} from '@expo/vector-icons'
 import { Image,Text,View,StyleSheet,TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { AppContext } from "../context/AppContext";
+import GenreListScreen from "../screen/GenreList";
+import { fetchGenres } from "../api/tmdb";
+// import GenreListScreen from "../screen/GenreList";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -49,11 +52,39 @@ const StackDetailNavigator = () => {
   };
 
 
-
-
 const DrawerNavigator = () => {
     const { user, setUser } = useContext(AppContext);
     const navigation = useNavigation();
+
+    const [genres, setGenres] = useState([]);
+
+    // // 장르 목록 가져오기
+    // const fetchGenres = async () => {
+    //     try {
+    //         const response = await axios.get(`${BASE_URL}genre/movie/list`, {
+    //           params: {
+    //             api_key: API_KEY,
+    //             language: 'ko-KR',
+    //           }
+    //         });
+    //         setGenres(response.data.genres);
+    //         } catch (error) {
+    //         console.error("Failed to fetch genres:", error);
+    //       }
+    //     };
+    
+    useEffect(() => {
+        const getGenres = async () => {
+          try {
+            const genresData = await fetchGenres(); // tmdbApi.js에서 가져온 함수 사용
+            setGenres(genresData);
+          } catch (error) {
+            console.error("Error fetching genres:", error);
+          }
+        };
+    
+        getGenres(); // 컴포넌트가 마운트될 때 장르 목록을 가져옵니다.
+      }, []);
 
     // 로그인 버튼 클릭 시
     const navigateToLoginScreen = () => {
@@ -64,7 +95,6 @@ const DrawerNavigator = () => {
     const handleLogout = () => {
         setUser(null)
         navigation.navigate('Home')
-        
     }
 
     //라벨 로그아웃 버튼 클릭 시
@@ -80,11 +110,15 @@ const DrawerNavigator = () => {
     const labelHandleLogoutMypage = () => {
         alert('로그인 후 이용해주세요')
         navigation.navigate('Home')
-        
     }
 
     const labelHandleLike = () => {
         navigation.navigate('Like')
+    }
+
+    // 장르별 영화
+    const handleNavClick = () => {
+        navigation.navigate('GenreList')
     }
 
     return(
@@ -226,6 +260,24 @@ const DrawerNavigator = () => {
                         )
                     } 
                 }}/>
+
+            {/* 장르별 drawer */}
+            {genres.map((genre) => (
+                <Drawer.Screen
+                key={genre.id}
+                name={genre.name}
+                component={GenreListScreen} // 장르에 맞는 화면을 연결
+                options={{
+                    drawerLabel: () => (
+                    <View style={{ flexDirection: 'row', marginLeft: -5 }}>
+                        <MaterialCommunityIcons name="filmstrip" size={20} color="white" />
+                        <Text style={{ color: "white", marginLeft: 10 }}>{genre.name}</Text>
+                    </View>
+                    ),
+                }}
+                />
+            ))}
+
             <Drawer.Screen name="Like" component={LikeScreen}
                 options={{
                     drawerLabel:()=>{
