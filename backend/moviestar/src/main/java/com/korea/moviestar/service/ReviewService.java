@@ -52,6 +52,13 @@ public class ReviewService {
 	// 리뷰 등록
 	public ReviewDTO create(String userId, ReviewDTO dto) {
 		int user = Integer.parseInt(userId);
+		
+		//같은 영화에 이미 작성된 리뷰가 있는지 확인
+		boolean exists = repository.existsByUserUserIdAndMovieMovieId(user, dto.getMovieId());
+		if(exists) {
+			throw new RuntimeException("이미 이 영화에 리뷰를 작성했습니다.");
+		}
+		
 		Optional<UserEntity> originUser = users.findById(user);
 		Optional<MovieEntity> originMovie = movies.findById(dto.getMovieId());
 		if(originUser.isPresent() && originMovie.isPresent()) {

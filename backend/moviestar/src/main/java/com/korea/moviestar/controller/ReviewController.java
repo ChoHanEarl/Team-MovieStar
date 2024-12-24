@@ -51,8 +51,12 @@ public class ReviewController {
 	// 리뷰 등록(로그인한 유저만 가능)
 	@PostMapping("/private/write")
 	public ResponseEntity<?> writeReview(@AuthenticationPrincipal String userId, @RequestBody ReviewDTO dto){
-		ReviewDTO response = service.create(userId, dto);
-		return ResponseEntity.ok().body(response);
+		try {
+			ReviewDTO response = service.create(userId, dto);
+			return ResponseEntity.ok().body(response);	
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
 	
 	@PutMapping("/private/modify/{reviewId}")

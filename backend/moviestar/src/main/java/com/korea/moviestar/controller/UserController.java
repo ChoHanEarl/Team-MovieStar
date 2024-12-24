@@ -72,7 +72,6 @@ public class UserController {
 	public ResponseEntity<?> signin(@RequestBody UserDTO dto) {
 	    try {
 	        if (dto == null) {
-	            log.error("Received DTO is null");
 	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("DTO is null");
 	        }
 
@@ -120,7 +119,6 @@ public class UserController {
 	                .header(HttpHeaders.SET_COOKIE, cookie.toString())
 	                .body(userResponse);
 	    } catch (Exception e) {
-	        log.error("Error during signin", e);
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 	                .body("Internal server error");
 	    }
@@ -313,10 +311,9 @@ public class UserController {
 	}
 
 	@PutMapping("/private/modify")
-	public ResponseEntity<?> modifyUser(@RequestBody UserDTO dto) {
+	public ResponseEntity<?> modifyUser(@AuthenticationPrincipal String userId, @RequestBody UserDTO dto) {
 		try {
-			dto.setUserPwd(passwordEncoder.encode(dto.getUserPwd()));
-			UserDTO response = service.update(dto);
+			UserDTO response = service.update(userId, dto);
 			return ResponseEntity.ok().body(response);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
@@ -327,13 +324,11 @@ public class UserController {
 	@PutMapping("/modifyPwd")
 	public ResponseEntity<?> modifyPwd(@RequestParam String email, @RequestBody UserDTO dto){
 		try {
-			log.info(dto.toString());
 			String newPwd = passwordEncoder.encode(dto.getUserPwd());
 			UserDTO updatedUser = service.updatePwd(email, newPwd);
 			
 	        // 비밀번호 변경 후 새로운 토큰 발급
 	        UserEntity user = UserService.toEntity(updatedUser, movies);
-	        log.info("newUser:" + user.toString());
 	        final String newToken = tokenProvider.create(user);  // 새로운 토큰 생성
 
 	        // 새로운 토큰을 쿠키로 설정하여 클라이언트에 전달

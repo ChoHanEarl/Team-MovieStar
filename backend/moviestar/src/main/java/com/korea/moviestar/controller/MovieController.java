@@ -45,28 +45,28 @@ public class MovieController {
 	
 	@GetMapping("/popular")
 	public ResponseEntity<?> getPopularMovies(){
-		List<PopularDTO> dtos = service.getPopular();
+		List<PopularDTO> dtos = service.saveAndGetPopular();
 		ResponseDTO<PopularDTO> response = ResponseDTO.<PopularDTO>builder().data(dtos).build();
 		return ResponseEntity.ok().body(response);
 	}
 	
 	@GetMapping("/top_rated")
 	public ResponseEntity<?> getTopRatedMovies(){
-		List<TopRatedDTO> dtos = service.getTopRated();
+		List<TopRatedDTO> dtos = service.saveAndGetTopRated();
 		ResponseDTO<TopRatedDTO> response = ResponseDTO.<TopRatedDTO>builder().data(dtos).build();
 		return ResponseEntity.ok().body(response);
 	}
 	
 	@GetMapping("/now_playing")
 	public ResponseEntity<?> getNowPlayingMovies(){
-		List<NowPlayingDTO> dtos = service.getNowplaying();
+		List<NowPlayingDTO> dtos = service.saveAndGetNowPlaying();
 		ResponseDTO<NowPlayingDTO> response = ResponseDTO.<NowPlayingDTO>builder().data(dtos).build();
 		return ResponseEntity.ok().body(response);
 	}
 	
 	@GetMapping("/theme/{themeId}")
 	public ResponseEntity<?> getThemeMovies(@PathVariable int themeId){
-		List<MovieThemeDTO> dtos = service.getThemeMovies(themeId);
+		List<MovieThemeDTO> dtos = service.getAndSaveThemeMovies(themeId);
 		ResponseDTO<MovieThemeDTO> response = ResponseDTO.<MovieThemeDTO>builder().data(dtos).build();
 		return ResponseEntity.ok().body(response);
 	}

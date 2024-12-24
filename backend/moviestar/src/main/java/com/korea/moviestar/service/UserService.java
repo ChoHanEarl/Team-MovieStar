@@ -89,7 +89,6 @@ public class UserService {
             
             if(origin.isPresent()) {
                 UserEntity entity = origin.get();
-                log.info("Found user entity: {}", entity);
                 
                 Set<MovieEntity> newList = entity.getUserLikeList();
                 if(newList == null) {
@@ -133,8 +132,8 @@ public class UserService {
         }
     }
     
-    public UserDTO update(UserDTO dto) {
-        Optional<UserEntity> origin = repository.findById(dto.getUserId());
+    public UserDTO update(String userId, UserDTO dto) {
+        Optional<UserEntity> origin = repository.findById(Integer.parseInt(userId));
         if(origin.isPresent()) {
             UserEntity entity = origin.get();
             // 아이디 중복 확인
@@ -155,7 +154,7 @@ public class UserService {
             entity.setUserName(dto.getUserName());
             entity.setUserNick(dto.getUserNick());
             entity.setUserEmail(dto.getUserEmail());
-            return new UserDTO(repository.save(entity)).hidePwd();
+            return new UserDTO(repository.save(entity));
         }
         return null;
     }

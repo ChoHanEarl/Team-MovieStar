@@ -214,7 +214,8 @@ const MovieDetail = ({ movieId, onClose }) => {
         const response = await axios.get(`http://localhost:9090/review/${movieId}`)
         console.log("Fetched Reviews:", response.data.data)
         const reviews = Array.isArray(response.data.data) ? response.data.data : []
-        setReviewList(reviews)
+        const sortedReviews = reviews.sort((a, b) => new Date(b.reviewDate) - new Date(a.reviewDate))
+        setReviewList(sortedReviews)
       } catch (error) {
         console.error("리뷰 로드 실패:", error)
       }
@@ -226,6 +227,11 @@ const MovieDetail = ({ movieId, onClose }) => {
   const addReview = async () => {
     if (!user) {
       alert("로그인한 유저만 리뷰를 등록할 수 있습니다.")
+      return;
+    }
+
+    if (!reviewContent) {
+      alert("리뷰 내용을 입력해주세요.")
       return;
     }
     
@@ -250,7 +256,12 @@ const MovieDetail = ({ movieId, onClose }) => {
         setVisibleReviews(3);
       }
     } catch (error) {
-      console.error("리뷰 등록 실패:", error)
+      console.error("리뷰 등록 실패:", error.response?.data?.data)
+      console.log(error.response?.data)
+      const errorMessage = error.response?.data
+      if(errorMessage === "이미 이 영화에 리뷰를 작성했습니다."){
+        alert("이미 이 영화에 리뷰를 작성했습니다.")
+      }
     }
   };
 

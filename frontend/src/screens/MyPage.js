@@ -4,6 +4,7 @@ import { AppContext } from '../context/AppContext';
 import { IoHome } from "react-icons/io5";
 import '../css/main/MyPage.css';
 import logo from "../logo/logo.png"
+import axios from 'axios';
 
 const MyPage = () => {
     const { user, setUser } = useContext(AppContext);
@@ -94,50 +95,19 @@ const MyPage = () => {
                 userEmail: formData.userEmail
             }));
 
+            axios.put("http://localhost:9090/user/private/modify",
+                {userName: formData.newUserName,
+                userNick: formData.userNick,
+                userEmail: formData.userEmail},
+                {
+                    withCredentials: true
+                })
+
             setMessage('프로필이 성공적으로 업데이트되었습니다.');
             setMessageType('success');
         }
     };
 
-    const updatePassword = () => {
-        if (!validatePasswordUpdate()) return;
-
-        // 로컬 스토리지의 사용자 정보 업데이트
-        const storageKey = Object.keys(localStorage).find(
-            key => JSON.parse(localStorage.getItem(key)).userName === user.userName
-        );
-
-        if (storageKey) {
-            const storedUser = JSON.parse(localStorage.getItem(storageKey));
-            
-            // 현재 비밀번호 확인
-            if (storedUser.userPwd !== formData.currentPassword) {
-                setMessage('현재 비밀번호가 일치하지 않습니다.');
-                setMessageType('error');
-                return;
-            }
-
-            // 새로운 정보로 업데이트
-            const updatedUser = {
-                ...storedUser,
-                userPwd: formData.newPassword
-            };
-
-            // 로컬 스토리지 업데이트
-            localStorage.setItem(storageKey, JSON.stringify(updatedUser));
-
-            // 입력 필드 초기화
-            setFormData(prev => ({
-                ...prev,
-                currentPassword: '',
-                newPassword: '',
-                confirmNewPassword: ''
-            }));
-
-            setMessage('비밀번호가 성공적으로 변경되었습니다.');
-            setMessageType('success');
-        }
-    };
 
     const handleLogoClick = () => {
         navigate("/home")
@@ -220,42 +190,7 @@ const MyPage = () => {
                     </div>
                 )}
 
-                {activeTab === 'password' && (
-                    <div className="password-edit-section">
-                        <h2>비밀번호 변경</h2>
-                        <div className="input-group">
-                            <label>현재 비밀번호</label>
-                            <input
-                                type="password"
-                                name="currentPassword"
-                                value={formData.currentPassword}
-                                onChange={handleInputChange}
-                                placeholder="현재 비밀번호 입력"
-                            />
-                        </div>
-                        <div className="input-group">
-                            <label>새 비밀번호</label>
-                            <input
-                                type="password"
-                                name="newPassword"
-                                value={formData.newPassword}
-                                onChange={handleInputChange}
-                                placeholder="새 비밀번호 입력"
-                            />
-                        </div>
-                        <div className="input-group">
-                            <label>새 비밀번호 확인</label>
-                            <input
-                                type="password"
-                                name="confirmNewPassword"
-                                value={formData.confirmNewPassword}
-                                onChange={handleInputChange}
-                                placeholder="새 비밀번호 다시 입력"
-                            />
-                        </div>
-                        <button onClick={updatePassword}>비밀번호 변경</button>
-                    </div>
-                )}
+                
 
                 {message && (
                     <div className={`message ${messageType}`}>
