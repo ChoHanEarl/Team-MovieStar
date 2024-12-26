@@ -78,7 +78,7 @@ const LoginScreen = () => {
                 setError("아이디 또는 비밀번호가 일치하지 않습니다.");
             }
         } catch (err) {
-            setError("로그인 오류가 발생했습니다. 다시 시도해 주세요.");
+            setError("아이디 또는 비밀번호가 일치하지 않습니다.");
         }
     };
 

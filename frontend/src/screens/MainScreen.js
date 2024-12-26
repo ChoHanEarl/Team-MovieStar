@@ -97,15 +97,39 @@ const TopRecommendation = ({ movies, onMovieSelect }) => {
 
     // 로그아웃 버튼 클릭 시
     const handleLogout = () => {
-        localStorage.removeItem("token")
-        setUser(null) // 사용자 로그아웃 처리
-        navigate("/login")
+      
+        axios.post("http://localhost:9090/user/logout",{},{ withCredentials: true })
+        .then(()=>{
+          setUser(null) // 사용자 로그아웃 처리
+          alert("로그아웃 처리되었습니다")
+        }).catch((error)=>{
+          console.log(error)
+          setUser(null) // 사용자 로그아웃 처리
+
+        })
+        
     }
 
     // 마이페이지로 이동하는 함수
     const navigateToMyPage = () => {
         navigate("/mypage")
     }
+
+    useEffect(()=>{
+      axios.get("http://localhost:9090/user/secure-data",{ withCredentials: true })
+      .then((response)=>{
+        console.log(response.data);
+      })
+      .catch((error) =>{
+        if (error.response && error.response.status === 401) {
+          console.log("Invalid token, logging out...");
+          // 로그아웃 처리
+          handleLogout();
+      } else {
+          console.log("Error: ", error.message);
+      }
+      })
+    },[])
   
     // 컴포넌트 마운트 시 영화 데이터 초기 로딩
     useEffect(() => {
