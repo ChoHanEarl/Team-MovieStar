@@ -86,14 +86,15 @@ export const fetchMovieCredits = async (movieId) => {
 // 장르 목록 가져오기
 export const fetchGenres = async () => {
   try {
-    const response = await axios.get(`${BASE_URL}genre/movie/list`, {
+    const response = await axios.get(`${API_URL}/genre/movie/list`, {
       params: {
         api_key: API_KEY,
         language: 'ko-KR',
-      }
+      },
     });
-    setGenres(response.data.genres);
-    } catch (error) {
+    return response.data.genres;  // 장르 목록만 반환
+  } catch (error) {
     console.error("Failed to fetch genres:", error);
+    return [];  // 실패 시 빈 배열 반환
   }
 };

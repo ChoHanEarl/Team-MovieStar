@@ -1,10 +1,11 @@
-// import React from "react";
+import React from "react";
+import { View } from "react-native";
 
-// const GenreListScreen = () => {
+const GenreListScreen = () => {
 
-//     return(
-        
-//     )
-// }
+    return(
+        <View></View>
+    )
+}
 
-// export default GenreListScreen;
+export default GenreListScreen;

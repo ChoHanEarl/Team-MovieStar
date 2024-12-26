@@ -10,7 +10,7 @@ import FindIdScreen from "../component/FindId";
 import FindPwdScreen from "../component/FindPwd";
 import LikeScreen from "../screen/LikeScreen";
 import MypageScreen from "../screen/MypageScreen";
-import {MaterialCommunityIcons} from '@expo/vector-icons'
+import {MaterialCommunityIcons, MaterialIcons} from '@expo/vector-icons'
 import { Image,Text,View,StyleSheet,TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { AppContext } from "../context/AppContext";
@@ -81,6 +81,8 @@ const DrawerNavigator = () => {
           } catch (error) {
             console.error("Error fetching genres:", error);
           }
+
+          getGenres();
         };
     
         getGenres(); // 컴포넌트가 마운트될 때 장르 목록을 가져옵니다.
@@ -117,8 +119,8 @@ const DrawerNavigator = () => {
     }
 
     // 장르별 영화
-    const handleNavClick = () => {
-        navigation.navigate('GenreList')
+    const handleGenreNavigation = (genreId, genreName) => {
+        navigation.navigate('GenreList', { genreId, genreName });
     }
 
     return(
@@ -262,21 +264,22 @@ const DrawerNavigator = () => {
                 }}/>
 
             {/* 장르별 drawer */}
-            {genres.map((genre) => (
+            {genres.map((genre) => 
                 <Drawer.Screen
-                key={genre.id}
-                name={genre.name}
-                component={GenreListScreen} // 장르에 맞는 화면을 연결
-                options={{
-                    drawerLabel: () => (
-                    <View style={{ flexDirection: 'row', marginLeft: -5 }}>
-                        <MaterialCommunityIcons name="filmstrip" size={20} color="white" />
-                        <Text style={{ color: "white", marginLeft: 10 }}>{genre.name}</Text>
-                    </View>
-                    ),
-                }}
+                    key={genre.id}
+                    name={genre.name}
+                    component={GenreListScreen}
+                    initialParams={{genreId : genre.id, genreName : genre.name}}
+                    options={{
+                        drawerLabel: () => (
+                            <View style={{ flexDirection: 'row', marginLeft: -5 }}>
+                                <MaterialIcons name="filmstrip" size={20} color="white" />
+                                <Text style={{ color: "white", marginLeft: 10 }}>{genre.name}</Text>
+                            </View>
+                        ),
+                    }}
                 />
-            ))}
+            )}
 
             <Drawer.Screen name="Like" component={LikeScreen}
                 options={{
