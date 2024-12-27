@@ -75,14 +75,12 @@ const DrawerNavigator = () => {
     
     useEffect(() => {
         const getGenres = async () => {
-          try {
-            const genresData = await fetchGenres(); // tmdbApi.js에서 가져온 함수 사용
-            setGenres(genresData);
-          } catch (error) {
-            console.error("Error fetching genres:", error);
-          }
-
-          getGenres();
+            try {
+                const genresData = await fetchGenres();  // TMDB API에서 장르 목록 가져오기
+                setGenres(genresData);  // 장르 데이터를 상태로 설정
+            } catch (error) {
+                console.error("Error fetching genres:", error);
+            }
         };
     
         getGenres(); // 컴포넌트가 마운트될 때 장르 목록을 가져옵니다.
@@ -118,10 +116,7 @@ const DrawerNavigator = () => {
         navigation.navigate('Like')
     }
 
-    // 장르별 영화
-    const handleGenreNavigation = (genreId, genreName) => {
-        navigation.navigate('GenreList', { genreId, genreName });
-    }
+
 
     return(
         <Drawer.Navigator initialRouteName="Main"
@@ -273,7 +268,7 @@ const DrawerNavigator = () => {
                     options={{
                         drawerLabel: () => (
                             <View style={{ flexDirection: 'row', marginLeft: -5 }}>
-                                <MaterialIcons name="filmstrip" size={20} color="white" />
+                                <MaterialIcons name="" size={20} color="white" />
                                 <Text style={{ color: "white", marginLeft: 10 }}>{genre.name}</Text>
                             </View>
                         ),

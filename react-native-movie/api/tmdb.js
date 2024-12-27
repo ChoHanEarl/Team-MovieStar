@@ -95,6 +95,22 @@ export const fetchGenres = async () => {
     return response.data.genres;  // 장르 목록만 반환
   } catch (error) {
     console.error("Failed to fetch genres:", error);
-    return [];  // 실패 시 빈 배열 반환
+    return [];  // 오류 발생 시 빈 배열 반환
+  }
+};
+
+// 영화 장르별로 데이터를 가져오는 함수
+export const fetchMoviesByGenre = async (genreId) => {
+  try {
+    const response = await instance.get('/discover/movie', {
+      params: {
+        with_genres: genreId,
+        sort_by: 'popularity.desc',
+      },
+    });
+    return response.data.results; 
+  } catch (error) {
+    console.error('Error fetching movies by genre:', error);
+    return [];
   }
 };
