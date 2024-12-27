@@ -26,7 +26,7 @@ const LikeScreen = () => {
                 return;
             }
 
-            const response = await axios.get("http://http://192.168.3.22:9090/user/private/like", {
+            const response = await axios.get("http://192.168.3.22:9090/user/private/like", {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
