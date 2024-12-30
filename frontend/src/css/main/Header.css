@@ -66,12 +66,12 @@ border-bottom: 3px solid #ddd;
 
 .logout-button-main,
 .login-button-main {
-  background-color: #d81f26;
+  background-color: #ff4d4d;
 }
 
 .logout-button-main:hover,
 .login-button-main:hover {
-  background-color: #a3151d;
+  background-color: #d32f2f;
 }
 
 .header-navbar {

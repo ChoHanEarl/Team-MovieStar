@@ -16,7 +16,7 @@
     padding: 90px;
     border-radius: 10px;
     width: 650px;
-    margin-top: 100px;
+    margin-top: 170px;
     box-sizing: border-box;
 }
 
@@ -56,4 +56,19 @@
     margin-bottom: 15px;
     font-size: 14px;
     text-align: center;
+}
+
+/* ChangePwd.css */
+.button {
+    background-color: #007bff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #0056b3;
 }

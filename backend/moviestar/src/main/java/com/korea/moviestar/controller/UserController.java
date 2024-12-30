@@ -33,6 +33,8 @@ import com.korea.moviestar.service.MailService;
 import com.korea.moviestar.service.SocialService;
 import com.korea.moviestar.service.UserService;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -72,7 +74,6 @@ public class UserController {
 	public ResponseEntity<?> signin(@RequestBody UserDTO dto) {
 	    try {
 	        if (dto == null) {
-	            log.error("Received DTO is null");
 	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("DTO is null");
 	        }
 
@@ -120,7 +121,6 @@ public class UserController {
 	                .header(HttpHeaders.SET_COOKIE, cookie.toString())
 	                .body(userResponse);
 	    } catch (Exception e) {
-	        log.error("Error during signin", e);
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 	                .body("Internal server error");
 	    }
@@ -230,6 +230,37 @@ public class UserController {
 		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body("Logged out");
 
 	}
+	
+	@GetMapping("/secure-data")
+    public ResponseEntity<?> getSecureData(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        String token = null;
+
+        // 쿠키에서 "token"을 찾고 값을 확인
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("token".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        if (token != null && !token.isEmpty()) {
+            // 토큰이 유효한지 확인 (예시: 토큰 파싱 후 검증)
+            boolean isValid = tokenProvider.validateToken(token);
+            if (isValid) {
+                // 유효한 경우 데이터 반환
+                return ResponseEntity.ok().body("Valid token data");
+            } else {
+                // 유효하지 않은 경우
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
+            }
+        } else {
+            // 쿠키에 토큰이 없는 경우
+        	return ResponseEntity.ok().body("No token, but request is valid");
+        }
+    }
 
 	@GetMapping("/find-id")
 	public ResponseEntity<?> findIdByEmail(@RequestParam String email) {
@@ -313,10 +344,9 @@ public class UserController {
 	}
 
 	@PutMapping("/private/modify")
-	public ResponseEntity<?> modifyUser(@RequestBody UserDTO dto) {
+	public ResponseEntity<?> modifyUser(@AuthenticationPrincipal String userId, @RequestBody UserDTO dto) {
 		try {
-			dto.setUserPwd(passwordEncoder.encode(dto.getUserPwd()));
-			UserDTO response = service.update(dto);
+			UserDTO response = service.update(userId, dto);
 			return ResponseEntity.ok().body(response);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
@@ -327,13 +357,11 @@ public class UserController {
 	@PutMapping("/modifyPwd")
 	public ResponseEntity<?> modifyPwd(@RequestParam String email, @RequestBody UserDTO dto){
 		try {
-			log.info(dto.toString());
 			String newPwd = passwordEncoder.encode(dto.getUserPwd());
 			UserDTO updatedUser = service.updatePwd(email, newPwd);
 			
 	        // 비밀번호 변경 후 새로운 토큰 발급
 	        UserEntity user = UserService.toEntity(updatedUser, movies);
-	        log.info("newUser:" + user.toString());
 	        final String newToken = tokenProvider.create(user);  // 새로운 토큰 생성
 
 	        // 새로운 토큰을 쿠키로 설정하여 클라이언트에 전달

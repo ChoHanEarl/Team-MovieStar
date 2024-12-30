@@ -42,19 +42,19 @@ const MovieSlider = ({ title, movies, onMovieSelect }) => {
         <div className="slider" ref={sliderRef}>
           {movies.map((movie) => (
             <div 
-              key={movie.id} 
+              key={movie.movieId} 
               className="slider-item"
               // 영화 클릭 시 상세 페이지/모달 오픈
               onClick={() => handleMovieClick(movie)}
             >
               {/* 영화 포스터 이미지 */}
               <img
-                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                alt={movie.title}
+                src={`https://image.tmdb.org/t/p/w500${movie.moviePoster}`}
+                alt={movie.movieName}
                 className="movie-poster"
               />
               {/* 영화 제목 */}
-              <h3>{movie.title}</h3>
+              <h3>{movie.movieName}</h3>
             </div>
           ))}
         </div>

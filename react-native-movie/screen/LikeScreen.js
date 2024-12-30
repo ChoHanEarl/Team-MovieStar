@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, TouchableOpacity, Image, FlatList, StyleSheet } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useFavoriteContext } from "../context/FavoriteContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 
@@ -15,6 +16,19 @@ const LikeScreen = () => {
     const handleMoviePress = (movieId) => {
         navigation.navigate("Home",{screen:"DetailScreen",params:{ id:movieId}});
     };
+
+    useEffect(()=>{
+        const fetchFavoriteMovies = async() => {
+            try {
+                const token = await AsyncStorage.getItem('token')
+                const response = await axios.post(
+                    
+                )
+            } catch (error) {
+                
+            }
+        }
+    },[])
 
 
     return (

@@ -6,6 +6,7 @@ import MovieDetail from "../components/MovieDetail.js";
 import MovieSlider from "../components/MovieSlider.js";
 import axios from "axios";
 import logo from "../logo/logo.png"
+import { API_BASE_URL } from "../api/api-config.js";
 
 import '../css/main/MyPage.css';
 import "../css/main/Header.css"
@@ -36,20 +37,20 @@ const TopRecommendation = ({ movies, onMovieSelect }) => {
       {/* 모든 추천 영화를 렌더링하지만 현재 인덱스의 영화만 활성화 */}
       {movies.map((movie, index) => (
         <div
-          key={movie.id}
+          key={movie.movieId}
           className={`top-recommendation ${index === currentIndex ? "active" : "inactive"
             }`}
             onClick={() => onMovieSelect(movie)} // 영화 클릭 시 모달 오픈
             >
               {/* 영화 배경 이미지 */}
               <img
-                src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
-                alt={movie.title}
+                src={`https://image.tmdb.org/t/p/w500${movie.movieBackdrop}`}
+                alt={movie.movieName}
                 className="top-recommendation-poster"
               />
               <div className="recommendation-info">
-                <h2>{movie.title}</h2>
-                <p>{movie.overview}</p>
+                <h2>{movie.movieName}</h2>
+                <p>{movie.movieOverview}</p>
             </div>
           </div>
         ))}
@@ -97,15 +98,39 @@ const TopRecommendation = ({ movies, onMovieSelect }) => {
 
     // 로그아웃 버튼 클릭 시
     const handleLogout = () => {
-        localStorage.removeItem("token")
-        setUser(null) // 사용자 로그아웃 처리
-        navigate("/login")
+      
+        axios.post(`${API_BASE_URL}/user/logout`,{},{ withCredentials: true })
+        .then(()=>{
+          setUser(null) // 사용자 로그아웃 처리
+          alert("로그아웃 처리되었습니다")
+        }).catch((error)=>{
+          console.log(error)
+          setUser(null) // 사용자 로그아웃 처리
+
+        })
+        
     }
 
     // 마이페이지로 이동하는 함수
     const navigateToMyPage = () => {
         navigate("/mypage")
     }
+
+    useEffect(()=>{
+      axios.get(`${API_BASE_URL}/user/secure-data`,{ withCredentials: true })
+      .then((response)=>{
+        console.log(response.data);
+      })
+      .catch((error) =>{
+        if (error.response && error.response.status === 401) {
+          console.log("Invalid token, logging out...");
+          // 로그아웃 처리
+          handleLogout();
+      } else {
+          console.log("Error: ", error.message);
+      }
+      })
+    },[])
   
     // 컴포넌트 마운트 시 영화 데이터 초기 로딩
     useEffect(() => {
@@ -124,24 +149,31 @@ const TopRecommendation = ({ movies, onMovieSelect }) => {
       fetchMovies();
     }, []);
 
-    // 장르 목록 가져오기
-      useEffect(() => {
-        const loadGenres = async () => {
-          const genreList = await fetchGenres();
-          setGenres(genreList);
+    useEffect(() => {
+      // 장르 목록을 가져옵니다
+      fetchGenres().then((genreList) => {
 
-          // 각 장르의 영화 가져오기
-          genreList.forEach(async (genre) => {
-            const moviesByGenre = await fetchMoviesByGenre(genre.id);
-            setMovies((prevMovies) => ({
-              ...prevMovies,
-              [genre.id]: moviesByGenre
-            }));
+        setGenres(genreList); // 장르 목록을 상태로 설정
+    
+        // 각 장르의 영화 가져오기
+        genreList.forEach((genre) => {
+
+          fetchMoviesByGenre(genre.themeId).then((moviesByGenre) => {
+
+            if (moviesByGenre) {
+              setMovies((prevMovies) => ({
+                ...prevMovies,
+                [genre.themeId]: moviesByGenre, // 장르별 영화 상태 업데이트
+              }));
+            } else {
+              console.log(`No movies found for genre: ${genre.themeId}`);
+            }
           });
-        };
-
-        loadGenres();
-      }, []);
+        });
+      }).catch((error) => {
+        console.error("Error fetching genres:", error);
+      });
+    }, []);
 
           const handleNavClick = (genreId) => {
             fetchMoviesByGenre(genreId).then((movies) => {
@@ -194,7 +226,7 @@ const TopRecommendation = ({ movies, onMovieSelect }) => {
           <div className="header-navbar">
             <header className="main-header">
               <img src={logo} className="main-logo" onClick={handleLogoClick} />
-              {/* 영화 검색 입력창 */}
+              {/* 영화 검색 입력창 */} 
               <input
                 type="text"
                 className="search-bar"
@@ -222,11 +254,11 @@ const TopRecommendation = ({ movies, onMovieSelect }) => {
             <nav className="nav-bar">
               {genres.map((genre) => (
                 <button
-                  key={genre.id}
-                  onClick={() => handleNavClick(genre.id)}
+                  key={genre.themeId}
+                  onClick={() => handleNavClick(genre.themeId)}
                   className="nav-item"
                 >
-                  {genre.name}
+                  {genre.themeName}
                 </button>
               ))}
             </nav>
@@ -264,10 +296,10 @@ const TopRecommendation = ({ movies, onMovieSelect }) => {
             />
             <div className="genre-movie-list">
               {genres.map((genre) => (
-                <div key={genre.id} ref={(el) => (sectionRef.current[genre.id] = el)}>
+                <div key={genre.themeId} ref={(el) => (sectionRef.current[genre.themeId] = el)}>
                   <MovieSlider
-                    title={genre.name}
-                    movies={movies[genre.id] || []}
+                    title={genre.themeName}
+                    movies={movies[genre.themeId] || []}
                     onMovieSelect={handleMovieSelect}
                   />
                 </div>
@@ -279,7 +311,7 @@ const TopRecommendation = ({ movies, onMovieSelect }) => {
         {/* 영화 선택 시 모달 렌더링 */}
         {selectedMovie && (
           <MovieDetail 
-            movieId={selectedMovie.id} 
+            movieId={selectedMovie.movieId} 
             onClose={handleCloseMovieDetail} 
           />
         )}

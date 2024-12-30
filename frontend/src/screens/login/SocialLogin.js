@@ -2,6 +2,7 @@ import React, { useEffect, useContext } from "react";
 import { AppContext } from "../../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_URL } from "../../api/api-config";
 
 export const NaverLogin = () => {
     const { setUser } = useContext(AppContext)
@@ -13,7 +14,7 @@ export const NaverLogin = () => {
         const state = urlParams.get("state");
 
         if (code && state) {
-            axios.post(`http://localhost:9090/user/naver_signin?code=${code}&state=${state}`,null,{ withCredentials: true })
+            axios.post(`${API_BASE_URL}/user/naver_signin?code=${code}&state=${state}`,null,{ withCredentials: true })
                 .then((response) => {
                     if (response.status === 200) {
                         const userData = response.data;
@@ -54,7 +55,7 @@ export const GoogleLogin = () => {
         const code = urlParams.get("code");
 
         if (code) {
-            axios.post(`http://localhost:9090/user/google_signin?code=${code}`,null,{ withCredentials: true })
+            axios.post(`${API_BASE_URL}/user/google_signin?code=${code}`,null,{ withCredentials: true })
                 .then((response) => {
                     if (response.status === 200) {
                         const userData = response.data;

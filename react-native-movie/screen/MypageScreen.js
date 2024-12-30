@@ -2,9 +2,11 @@ import React, { useContext, useState, useEffect } from "react";
 import { AppContext } from "../context/AppContext";
 import { View,Text, TouchableOpacity, StyleSheet, TextInput, ScrollView } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
 
 const MypageScreen= () => {
+    const navigation = useNavigation();
     const {user,setUser} = useContext(AppContext)
     const [formData, setFormData] = useState({
         userName: user?.userName || '',
@@ -14,7 +16,11 @@ const MypageScreen= () => {
         newPassword:'',
         confirmNewPassword:'',
     })
+    const [email, setEmail] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmNewPassword, setConfirmNewPassword] = useState('');
     const [message, setMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
     const [messageType, setMessageType] = useState('');
     const [tab, setTab] = useState('profile');
 
@@ -78,47 +84,62 @@ const MypageScreen= () => {
         }
         
     }
+    const passwordCheck = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-     // 비밀번호 변경 함수
-     const handlePasswordChange = () => {
-        if (!formData.currentPassword || !formData.newPassword || !formData.confirmNewPassword) {
-            setMessage('모든 비밀번호 필드를 입력해주세요');
-            setMessageType('error');
-            return;
+    const handleChangePassword = () => {
+        if (!newPassword || !confirmNewPassword) {
+            setErrorMessage('모든 항목을 입력해주세요');
+            return false;
         }
 
-        if (formData.newPassword !== formData.confirmNewPassword) {
-            setMessage('새 비밀번호와 새 비밀번호 확인이 일치하지 않습니다');
-            setMessageType('error');
-            return;
+        if (newPassword !== confirmNewPassword) {
+            setErrorMessage('비밀번호가 일치하지 않습니다.');
+            return false;
+        }
+        if (newPassword.length < 6) {
+            setErrorMessage('비밀번호는 최소 6자 이상이여야합니다.');
+            return false;
+        }
+        if (!passwordCheck.test(newPassword)) {
+            setErrorMessage('비밀번호는 최소 8자 이상이며, 대소문자, 숫자, 특수문자가 포함되어야 합니다.');
+            return false;
         }
 
-        // 비밀번호 변경 처리 로직 추가 (서버 연동 등)
+        setErrorMessage('');
+        return true;
+    }
 
-        setMessage('비밀번호가 변경되었습니다.');
-        setMessageType('success');
+    const handlePasswordChange = async () => {
+        if (handleChangePassword()) {
+            try {
+                const token = await AsyncStorage.getItem('token');
+                const response = await axios.put(
+                    `http://192.168.3.22:9090/user/modifyPwd?email=${email}`, 
+                    {userPwd: newPassword,},
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + token
+                        },
+                        withCredentials: true,
+                    }
+                );
+                if (response.status === 200) {
+                    console.log('비밀번호가 변경되었습니다.');
+                    alert("비밀번호가 변경되었습니다.");
+
+                    navigation.navigate('Home');
+                } else {
+                    setErrorMessage(response.data.message || '비밀번호 변경에 실패했습니다.');
+                }
+
+            } catch (error) {
+                setErrorMessage('서버 오류가 발생했습니다. 다시 시도해주세요.');
+                console.error('로그인 실패: ', error);
+            }
+        }
     };
 
-    useEffect(() => {
-        const loadUserData = async () => {
-            try {
-                const storedUser = await AsyncStorage.getItem("user");
-                if (storedUser) {
-                    const parsedUser = JSON.parse(storedUser);
-                    setUser(parsedUser);
-                    setFormData({
-                        userName: parsedUser.userName,
-                        userNick: parsedUser.userNick,
-                        userEmail: parsedUser.userEmail,
-                    });
-                }
-            } catch (error) {
-                console.error("사용자 정보 로딩 실패", error);
-            }
-        };
-
-        loadUserData();
-    }, []);
 
     
     return(
@@ -173,36 +194,38 @@ const MypageScreen= () => {
                 {tab === 'password' &&
                 <View style={{marginTop:10}}>
                     <Text style={styles.userNickText}>{` ${formData.userNick}님 안녕하세요! :)`}</Text>
-                    <Text style={styles.formText}>현재 비밀번호</Text>
+                    <Text style={styles.formText}>이메일</Text>
                         <TextInput
                             style={styles.formTextInput}
-                            value={formData.currentPassword}
-                            onChangeText={(value)=> handleInputChange('currentPassword', value)}
-                            placeholder="현재 비밀번호"
+                            value={email}
+                            onChangeText={setEmail}
+                            placeholder="이메일"
                             placeholderTextColor="grey"
                         />
 
-                    <Text style={styles.formText}>비밀번호 확인</Text>
+                    <Text style={styles.formText}>새 비밀번호 입력</Text>
                         <TextInput
                             style={styles.formTextInput}
-                            value={formData.newPassword}
-                            onChangeText={(value)=> handleInputChange('newPassword', value)}
-                            placeholder="새 비밀번호"
+                            value={newPassword}
+                            onChangeText={setNewPassword}
+                            placeholder="새 비밀번호 입력"
                             placeholderTextColor="grey"
                         />
 
                     <Text style={styles.formText}>새 비밀번호 확인</Text>
                         <TextInput
                             style={styles.formTextInput}
-                            value={formData.confirmNewPassword}
-                            onChangeText={(value)=> handleInputChange('confirmNewPassword', value)}
+                            value={confirmNewPassword}
+                        onChangeText={setConfirmNewPassword}
                             placeholder="새 비밀번호 확인"
                             placeholderTextColor="grey"
+                            secureTextEntry
                         />
                     <TouchableOpacity onPress={handlePasswordChange} >
                         <Text style={styles.profileButton}>비밀번호 변경</Text>
                     </TouchableOpacity>
-                        <Text style={styles.borderLine}></Text>
+                        <Text style={styles.borderLine}>{errorMessage}</Text>
+                        
                 </View>
                 }
                 {message && (
@@ -257,7 +280,8 @@ const styles = StyleSheet.create({
         marginLeft:105, borderRadius:10, marginTop:30,
     },
     borderLine: {
-        borderBottomWidth:1, borderRadius:20,borderColor:'white',padding:10,marginTop:5
+        borderBottomWidth:1, borderRadius:20,borderColor:'white',padding:10,marginTop:5,color:'red',
+        textAlign:'center'
     },
 
     message : {

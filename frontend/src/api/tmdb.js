@@ -1,4 +1,5 @@
 import axios from "axios";
+import { API_BASE_URL } from "./api-config";
 
 const API_KEY = process.env.REACT_APP_TMDB_API_KEY; // TMDB API 키
 const API_URL = "https://api.themoviedb.org/3"; // TMDB API 기본 URL
@@ -15,100 +16,73 @@ const instance = axios.create({
 // 인기 영화 데이터를 가져오는 함수
 export const fetchPopularMovies = async () => {
   try {
-    const response = await instance.get("/movie/popular"); // 인기 영화 엔드포인트 호출
-    console.log(response.data.results)
-    return response.data.results; // 영화 데이터 반환
+    const response = await axios.get(`${API_BASE_URL}/movie/popular`);
+
+    return response.data.data;  // 데이터를 반환
   } catch (error) {
-    console.error("Error fetching popular movies:", error);
-    return [];
+    console.error("Error searching for movies:", error);
+    return [];  // 오류 발생 시 빈 배열 반환
   }
 };
 
 // 영화 검색 함수
 export const searchMovies = async (query) => {
   try {
-    const response = await instance.get("/search/movie", {
-      params: {
-        query, // 검색어를 파라미터로 추가
-      },
-    });
-    return response.data.results;
+    const response = await axios.get(`${API_BASE_URL}/movie/search?query=` + query);
+    if(!response.data.data){
+      return []
+    }
+    return response.data.data;  // 데이터를 반환
   } catch (error) {
     console.error("Error searching for movies:", error);
-    return [];
-  }
-};
-
-// 영화 상세 정보 함수
-export const fetchMovieDetails = async (movieId) => {
-  try {
-    const response = await instance.get(`/movie/${movieId}`);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching movie details:", error);
-    return {};
+    return [];  // 오류 발생 시 빈 배열 반환
   }
 };
 
 // 현재 상영 중인 영화 데이터를 가져오는 함수
 export const fetchNowPlayingMovies = async () => {
   try {
-    const response = await instance.get("/movie/now_playing");
-    return response.data.results;
+    const response = await axios.get(`${API_BASE_URL}/movie/now_playing`);
+
+    return response.data.data;  // 데이터를 반환
   } catch (error) {
-    console.error("Error fetching now playing movies:", error);
-    return [];
+    console.error("Error searching for movies:", error);
+    return [];  // 오류 발생 시 빈 배열 반환
   }
 };
 
 // 높은 평점 영화 데이터를 가져오는 함수
 export const fetchTopRatedMovies = async () => {
   try {
-    const response = await instance.get("/movie/top_rated");
-    return response.data.results;
-  } catch (error) {
-    console.error("Error fetching top rated movies:", error);
-    return [];
-  }
-};
+    const response = await axios.get(`${API_BASE_URL}/movie/top_rated`);
 
-//출연진 목록을 가져오는 함수
-export const fetchMovieCredits = async (movieId) => {
-  try {
-    const response = await instance.get(`/movie/${movieId}/credits`);
-    console.log("API 응답 데이터:", response.data); // 응답 데이터 구조 확인
-    return response.data; // cast 배열을 가져오는 대신 전체 데이터를 반환
+    return response.data.data;  // 데이터를 반환
   } catch (error) {
-    console.error("Error fetching movie credits:", error);
-    return { cast: [] }; // 오류 발생 시 기본값 설정
+    console.error("Error searching for movies:", error);
+    return [];  // 오류 발생 시 빈 배열 반환
   }
 };
 
 // 장르 목록을 가져오는 함수
 export const fetchGenres = async () => {
   try {
-    const response = await instance.get("/genre/movie/list");
-    return response.data.genres;
+    const response = await axios.get(`${API_BASE_URL}/movie/themes`);
+
+    return response.data.data;  // 데이터를 반환
   } catch (error) {
-    console.error("Error fetching genres:", error);
-    return [];
+    console.error("Error fetching genres:", error); 
+    return [];  // 오류 발생 시 빈 배열 반환
   }
 };
 
 // 영화 장르별로 데이터를 가져오는 함수
-export const fetchMoviesByGenre = async (genreId) => {
+export const fetchMoviesByGenre = async (themeId) => {
   try {
-    const response = await axios.get(`${API_URL}/discover/movie`, {
-      params: {
-        api_key: API_KEY,
-        with_genres: genreId,
-        language: "ko-KR",
-        sort_by: "popularity.desc",
-      },
-    });
-    return response.data.results; // 영화 데이터 반환
+    const response = await axios.get(`${API_BASE_URL}/movie/theme/` + themeId);
+
+    return response.data.data;  // 데이터를 반환
   } catch (error) {
-    console.error("Error fetching movies by genre:", error);
-    return []; // 오류 발생 시 빈 배열 반환
+    console.error("Error fetching movies by genre:", error); 
+    return [];  // 오류 발생 시 빈 배열 반환
   }
-};
+}

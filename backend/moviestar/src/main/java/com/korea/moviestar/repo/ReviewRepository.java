@@ -11,4 +11,5 @@ import com.korea.moviestar.entity.ReviewEntity;
 public interface ReviewRepository extends JpaRepository<ReviewEntity, Integer>{
 	List<ReviewEntity> findByUserUserId(int userId);
 	List<ReviewEntity> findByMovieMovieId(int movieId);
+	boolean existsByUserUserIdAndMovieMovieId(int userId, int movieId);
 }

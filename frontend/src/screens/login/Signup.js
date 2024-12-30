@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../css/login/Signup.css"
 import logo from "../../logo/logo.png"
+import { API_BASE_URL } from "../../api/api-config";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -71,7 +72,7 @@ const Signup = () => {
     e.preventDefault()
     try {
       // 회원가입 요청
-      const response = await fetch("/user/signup", {
+      const response = await fetch(`${API_BASE_URL}/user/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
