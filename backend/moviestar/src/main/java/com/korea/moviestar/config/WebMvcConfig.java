@@ -12,7 +12,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
-		.allowedOrigins("http://localhost:3000","http://localhost:8081", "http://react-moviestar-app-env.eba-vm33x95s.ap-northeast-2.elasticbeanstalk.com")
+		.allowedOrigins("http://localhost:3000","http://localhost:8081", "http://Frontend-env-env.eba-egzfpyqb.ap-southeast-2.elasticbeanstalk.com")
 		.allowedMethods("GET","POST","PUT","DELETE")
 		.allowedHeaders("*")
 		.allowCredentials(true)
