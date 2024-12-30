@@ -6,6 +6,7 @@ import MovieDetail from "../components/MovieDetail.js";
 import MovieSlider from "../components/MovieSlider.js";
 import axios from "axios";
 import logo from "../logo/logo.png"
+import { API_BASE_URL } from "../api/api-config.js";
 
 import '../css/main/MyPage.css';
 import "../css/main/Header.css"
@@ -98,7 +99,7 @@ const TopRecommendation = ({ movies, onMovieSelect }) => {
     // 로그아웃 버튼 클릭 시
     const handleLogout = () => {
       
-        axios.post("http://localhost:9090/user/logout",{},{ withCredentials: true })
+        axios.post(`${API_BASE_URL}/user/logout`,{},{ withCredentials: true })
         .then(()=>{
           setUser(null) // 사용자 로그아웃 처리
           alert("로그아웃 처리되었습니다")
@@ -116,7 +117,7 @@ const TopRecommendation = ({ movies, onMovieSelect }) => {
     }
 
     useEffect(()=>{
-      axios.get("http://localhost:9090/user/secure-data",{ withCredentials: true })
+      axios.get(`${API_BASE_URL}/user/secure-data`,{ withCredentials: true })
       .then((response)=>{
         console.log(response.data);
       })

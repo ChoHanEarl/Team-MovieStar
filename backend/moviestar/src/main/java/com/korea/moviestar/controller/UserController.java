@@ -33,6 +33,8 @@ import com.korea.moviestar.service.MailService;
 import com.korea.moviestar.service.SocialService;
 import com.korea.moviestar.service.UserService;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -228,6 +230,37 @@ public class UserController {
 		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body("Logged out");
 
 	}
+	
+	@GetMapping("/secure-data")
+    public ResponseEntity<?> getSecureData(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        String token = null;
+
+        // 쿠키에서 "token"을 찾고 값을 확인
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("token".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        if (token != null && !token.isEmpty()) {
+            // 토큰이 유효한지 확인 (예시: 토큰 파싱 후 검증)
+            boolean isValid = tokenProvider.validateToken(token);
+            if (isValid) {
+                // 유효한 경우 데이터 반환
+                return ResponseEntity.ok().body("Valid token data");
+            } else {
+                // 유효하지 않은 경우
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
+            }
+        } else {
+            // 쿠키에 토큰이 없는 경우
+        	return ResponseEntity.ok().body("No token, but request is valid");
+        }
+    }
 
 	@GetMapping("/find-id")
 	public ResponseEntity<?> findIdByEmail(@RequestParam String email) {

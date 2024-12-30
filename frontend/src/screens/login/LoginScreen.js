@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react"
 import { AppContext } from "../../context/AppContext"
+import { API_BASE_URL } from "../../api/api-config"
 import { Link, useNavigate } from "react-router-dom"
 import "../../css/login/LoginScreen.css"
 import logo from "../../logo/logo.png"
@@ -56,7 +57,7 @@ const LoginScreen = () => {
     try {
         console.log("로그인 시도:", formData);
         const response = await axios.post(
-            "http://localhost:9090/user/signin", 
+            `${API_BASE_URL}/user/signin`, 
             { userName: formData.userName, userPwd: formData.userPwd },
             { withCredentials: true }
         );

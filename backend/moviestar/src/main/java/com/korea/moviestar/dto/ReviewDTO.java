@@ -5,7 +5,6 @@ import java.util.Date;
 import com.korea.moviestar.entity.MovieEntity;
 import com.korea.moviestar.entity.ReviewEntity;
 import com.korea.moviestar.entity.UserEntity;
-import com.mysql.cj.x.protobuf.MysqlxCrud.Find;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

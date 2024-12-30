@@ -41,7 +41,7 @@ const ReviewForm = ({ rate, setRate, review, setReview, addReview }) => (
     </View>
 );
 
-const ReviewItem = ({ item, onEdit, onRemove, editable, editState, updateReview, cancelEdit }) => (
+const ReviewItem = ({ item, onEdit, onRemove, editable, editState, updateReview, cancelEdit,setEditState }) => (
     
     <View style={styles.reviewItem}>
         <Text style={styles.reviewUser}>{item.userNick}</Text>
@@ -60,16 +60,16 @@ const ReviewItem = ({ item, onEdit, onRemove, editable, editState, updateReview,
         {editable && editState.id === item.id && (
             <View style={styles.reviewForm}>
                 <StarRating
-                    rating={editState.rate}
-                    setRating={(newRate) => onEdit((prev) => ({ ...prev, rate: newRate }))}
+                    rating={editState.reviewRating}
+                    setRating={(newRate) => setEditState((prev) => ({ ...prev, reviewRating: newRate }))}
                     size={15}
                 />
                 <TextInput
                     style={styles.reviewInput}  
                     placeholder="리뷰 내용을 입력해주세요"
                     placeholderTextColor="white"
-                    value={editState.review}
-                    onChangeText={(text) => onEdit((prev) => ({ ...prev, review: text }))}
+                    value={editState.reviewContent}
+                    onChangeText={(text) => setEditState((prev) => ({ ...prev, reviewContent: text }))}
                 />
 
                 <View style={styles.reviewUser}>
@@ -147,7 +147,7 @@ const DetailScreen = () => {
             }
         };
         fetchReviews();
-    }, [id, reviewList.length]);
+    }, [id]);
 
     // 출연진 정보 가져오기
     useEffect(() => {
@@ -230,9 +230,23 @@ const DetailScreen = () => {
             setEditable(false);
             setEditState({ id: -1, rate: 5, review: '' });
         } catch (error) {
-            console.error('Error updating review:', error);
+            // 더 구체적으로 에러 로그를 출력해보기
+            if (error.response) {
+                // 서버가 응답을 했을 경우
+                console.error('Server Response:', error.response.data);
+                alert(`서버 오류: ${error.response.data.message || '알 수 없는 오류'}`);
+            } else if (error.request) {
+                // 요청은 했지만 응답을 받지 못한 경우
+                console.error('Request was made but no response received:', error.request);
+                alert('서버 응답 없음');
+            } else {
+                // 다른 오류 발생
+                console.error('Error:', error.message);
+                alert('네트워크 오류');
+            }
         }
     };
+    
 
     // 리뷰 삭제
     const handleRemove = async (reviewId) => {
@@ -337,6 +351,7 @@ return (
                     editState={editState}
                     updateReview={updateReview}
                     cancelEdit={cancelEdit}
+                    setEditState={setEditState}
                 />
             )}
         />

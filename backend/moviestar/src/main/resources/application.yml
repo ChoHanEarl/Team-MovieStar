@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: moviestar
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://awseb-e-puzdbmapqn-stack-awsebrdsdatabase-cqh3sxyyyua1.c3e8ys4mun0r.ap-northeast-2.rds.amazonaws.com:3306/ebdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: moviestar
+    password: moviestar
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: wlgjs566@gmail.com
+    password: jhdnqrqkcjmqigvt
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+server:
+  port: 5000
+

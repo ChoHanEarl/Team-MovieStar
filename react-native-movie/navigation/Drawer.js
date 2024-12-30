@@ -6,8 +6,8 @@ import MainScreen from "../screen/MainScreen";
 import DetailScreen from "../screen/DetailScreen";
 import LoginScreen from "../screen/LoginScreen";
 import SignupScreen from "../screen/SignupScreen";
-import FindIdScreen from "../component/FindId";
-import FindPwdScreen from "../component/FindPwd";
+import FindIdOrPwdScreen from "../component/FindIdOrPwd";
+import FindPwdScreen from "../component/FindIdOrPwd";
 import PwdChangeScreen from "../component/ChangePwd";
 import LikeScreen from "../screen/LikeScreen";
 import MypageScreen from "../screen/MypageScreen";
@@ -41,7 +41,7 @@ const StackDetailNavigator = () => {
             options={{ headerShown: false}} />
         <Stack.Screen name="Signup" component={SignupScreen} 
             options={{ headerShown: false}} />
-        <Stack.Screen name="FindId" component={FindIdScreen} 
+        <Stack.Screen name="FindIdOrPwd" component={FindIdOrPwdScreen} 
             options={{ headerShown: false}} />
         <Stack.Screen name="FindPassword" component={FindPwdScreen} 
             options={{ headerShown: false}}/>

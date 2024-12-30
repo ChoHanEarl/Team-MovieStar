@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
-import { View, TouchableOpacity, Text, TextInput,Button, StyleSheet,KeyboardAvoidingView,ScrollView } from "react-native";
+import { View, TouchableOpacity, Text, TextInput,Button, StyleSheet,KeyboardAvoidingView,ScrollView, Alert } from "react-native";
 import { Linking, Platform } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AppContext } from "../context/AppContext";
 import axios from "axios";
-
 
 const LoginScreen = () => {
     const [formData, setFormData] = useState({ userName: "", userPwd: "" });
@@ -20,43 +19,22 @@ const LoginScreen = () => {
         }
     },[isfocused])
 
-    // 네이버 로그인
-    const handleNaverLogin = () => {
-        const NAVER_LOGIN_CLIENT_ID ="kSEszMRKZ_x7AdJDnave";
-        const REDIRECT_URI = 'http://localhost:9090/oauth'
-        const STATE = "false";
-        const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_LOGIN_CLIENT_ID}&state=${STATE}&redirect_uri=${REDIRECT_URI}`;
-        Linking.openURL(NAVER_AUTH_URL).catch(err => console.error("Failed to open URL:", err))
-    };
-
-
-    // 카카오 로그인
-    const handleKakaoLogin = () => {
-        const Rest_api_key = Config.REACT_APP_KAKAO_LOGIN_API_KEY;
-        const REDIRECT_URI = 'http://localhost:9090/oauth';
-        const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-        Linking.openURL(KAKAO_AUTH_URL).catch(err => console.error("Failed to open URL:", err))
-    };
-
-    // 구글 로그인
-    const handleGoogleLogin = () => {
-        const GOOGLE_CLIENT_ID = Config.REACT_APP_GOOGLE_LOGIN_CLIENT_ID;
-        const REDIRECT_URI = 'http://localhost:9090/oauth';
-        const SCOPE = "email profile";
-        const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=${SCOPE}`;
-        Linking.openURL(GOOGLE_AUTH_URL).catch(err => console.error("Failed to open URL:", err))
-    };
-
     // 폼 제출 처리
     const handleSubmit = async () => {
         try {
+            console.log(formData)
             const response = await axios.post(
-                "http://192.168.3.22:9090/user/signin",
+                "http://10.0.2.2:9090/user/signin",
                 {
                     userName: formData.userName,
                     userPwd: formData.userPwd
                 },
-                { withCredentials: true } 
+                { 
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    withCredentials: true 
+                } 
             );
 
             if (response.status === 200) {
@@ -71,14 +49,14 @@ const LoginScreen = () => {
                 });
                 console.log("Context에 저장된 사용자 정보:", userData);
                 
-                alert("로그인 성공")
                 navigation.navigate("Home"); 
             } else {
                 setFormData({ userName: "", userPwd: "" });
                 setError("아이디 또는 비밀번호가 일치하지 않습니다.");
             }
         } catch (err) {
-            setError("아이디 또는 비밀번호가 일치하지 않습니다.");
+            setError("로그인 오류가 발생했습니다. 다시 시도해 주세요:" + err);
+            console.error(err.message)
         }
     };
 
@@ -119,34 +97,14 @@ const LoginScreen = () => {
                             <Text style={styles.Loginbutton}>로그인</Text>
                         </TouchableOpacity>
 
-
                         {/* 에러 메시지 */}
                         {error && <Text style={styles.errortext}>{error}</Text>}
-
-                        {/* 소셜 로그인 섹션 */}
-                        <View>
-                            <Text style={styles.socialinput}>SocialLogin</Text>
-                                <View>
-                                    <TouchableOpacity onPress={handleNaverLogin}>
-                                        <Text style={styles.naverbutton}>네이버 로그인</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity  onPress={handleKakaoLogin}>
-                                        <Text style={styles.kakaobutton}>카카오 로그인</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity  onPress={handleGoogleLogin}>
-                                        <Text style={styles.googlebutton}>구글 로그인</Text>
-                                    </TouchableOpacity>
-                                </View>
-                        </View>
                     </View>
 
                     {/* 링크 섹션 */}
                     <View style={styles.Link}>
-                        <TouchableOpacity onPress={() => navigation.navigate("FindId")}>
-                            <Text style={styles.Linktext}>아이디 찾기</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => navigation.navigate("FindPassword")}>
-                            <Text style={styles.Linktext}>비밀번호 찾기</Text>
+                        <TouchableOpacity onPress={() => navigation.navigate("FindIdOrPwd")}>
+                            <Text style={styles.Linktext}>아이디/비밀번호 찾기</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
                             <Text style={styles.Linktext}>회원가입</Text>
@@ -243,41 +201,12 @@ const styles = StyleSheet.create({
         color:'white',
         borderRadius:10,
     },
-    naverbutton:{
-        backgroundColor:'#03c75a',
-        textAlign:'center',
-        fontSize: 16,
-        padding:14,
-        margin:5,
-        color:'white',
-        borderRadius:10,
-    },
-    kakaobutton:{
-        backgroundColor:'#fee500',
-        textAlign:'center',
-        fontSize: 16,
-        padding:14,
-        margin:5,
-        color:'white',
-        borderRadius:10,
-    },
-    googlebutton:{
-        backgroundColor:'#4285f4',
-        textAlign:'center',
-        fontSize: 16,
-        padding:14,
-        margin:5,
-        color:'white',
-        borderRadius:10,
-    },
     errortext: {
         color: "white",
         textAlign: "center",
         marginTop: 10,
-        fontSize:12,
+        fontSize: 12,
     }
 })
-
-
 
 export default LoginScreen;

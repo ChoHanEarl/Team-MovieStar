@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { AppContext } from "../context/AppContext";
 import { View,Text, TouchableOpacity, StyleSheet, TextInput, ScrollView } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -9,9 +9,9 @@ const MypageScreen= () => {
     const navigation = useNavigation();
     const {user,setUser} = useContext(AppContext)
     const [formData, setFormData] = useState({
-        userName: user?.userName,
-        userNick: user?.userNick,
-        userEmail: user?.userEmail,
+        userName: user?.userName || '',
+        userNick: user?.userNick || '',
+        userEmail: user?.userEmail || '',
         currentPassword: '',
         newPassword:'',
         confirmNewPassword:'',
@@ -32,60 +32,61 @@ const MypageScreen= () => {
         setMessage('');
     };
 
-    const handleProfileUpdate = async () => {
+    const handleProfileUpdate = async() => {
         try {
-            // 사용자 정보 업데이트
-            const updatedUser = {
-                ...user, // AppContext에서 가져온 user 정보를 사용
+            const storedUser = await AsyncStorage.getItem('user');
+            let existingUser = storedUser ? JSON.parse(storedUser) : null;
+
+            // 입력값과 기존 값이 다를 경우에만 로컬스토리지 업데이트
+            if (
+                existingUser &&
+                existingUser.userName === formData.userName &&
+                existingUser.userNick === formData.userNick &&
+                existingUser.userEmail === formData.userEmail
+            ) {
+                setMessage('수정된 내용이 없습니다.');
+                setMessageType('info');
+                return; // 중복되는 값이기 때문에 업데이트를 하지 않음
+            }
+            
+            if(!formData.userName || !formData.userNick || !formData.userEmail){
+                setMessage('모든 필드를 입력해주세요')
+                setMessageType('error')
+                return;
+            }
+
+            const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+            if (!emailRegex.test(formData.userEmail)) {
+                setMessage('유효한 이메일 주소를 입력해주세요');
+                setMessageType('error');
+                return;
+            }
+
+            setUser((prev)=>({
+                ...prev,
+                userName: formData.userName,
+                userNick: formData.userNick,
+                userEmail: formData.userEmail
+            }));
+
+            AsyncStorage.setItem('user', JSON.stringify({
                 userName: formData.userName,
                 userNick: formData.userNick,
                 userEmail: formData.userEmail,
-                userPwd: formData.newPassword || user.userPwd,  // 비밀번호가 변경되었다면 변경된 비밀번호 사용
-                userId: user.userId // userId 포함
-            };
-    
-            // AsyncStorage에 업데이트된 사용자 정보 저장
-            await AsyncStorage.setItem('user', JSON.stringify(updatedUser)); // `token`은 변경하지 않음
-    
-            // Context 상태 업데이트
-            setUser(updatedUser);
-    
-            // 서버에 프로필 수정 요청
-            const token = await AsyncStorage.getItem('token');
-            const response = await axios.put(
-                `http://192.168.3.22:9090/user/private/modify`,
-                { userName: formData.userName, userNick: formData.userNick, userEmail: formData.userEmail },
-                {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                    withCredentials: true,
-                }
-            );
-    
-            // 응답 처리
-            if (response.status === 200) {
-                setMessage('프로필이 성공적으로 업데이트되었습니다.');
-                setMessageType('success');
-            } else {
-                setMessage('서버 오류로 인해 프로필 업데이트에 실패했습니다.');
-                setMessageType('error');
-            }
+            }));
+
+            setMessage('프로필이 수정되었습니다.')
+            setMessageType('success')
         } catch (error) {
-            setMessage('프로필 업데이트 중 오류가 발생했습니다.');
+            console.error('프로필 업데이트 실패', error);
+            setMessage('프로필 수정 중 오류가 발생했습니다.');
             setMessageType('error');
-            console.error('Error updating profile: ', error.response ? error.response.data : error.message);
         }
-    };
-    
-    
-    
+        
+    }
+    const passwordCheck = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-    
     const handleChangePassword = () => {
-        const passwordCheck = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
         if (!newPassword || !confirmNewPassword) {
             setErrorMessage('모든 항목을 입력해주세요');
             return false;
@@ -126,9 +127,6 @@ const MypageScreen= () => {
                 if (response.status === 200) {
                     console.log('비밀번호가 변경되었습니다.');
                     alert("비밀번호가 변경되었습니다.");
-                    setEmail('');
-                    setNewPassword('');
-                    setConfirmNewPassword('');
 
                     navigation.navigate('Home');
                 } else {
@@ -190,7 +188,7 @@ const MypageScreen= () => {
                     <TouchableOpacity onPress={handleProfileUpdate} >
                         <Text style={styles.profileButton}>프로필 수정</Text>
                     </TouchableOpacity>
-                    <Text style={styles.borderLine}>{errorMessage}</Text>
+                    <Text style={styles.borderLine}></Text>
                 </View>
                 }
                 {tab === 'password' &&

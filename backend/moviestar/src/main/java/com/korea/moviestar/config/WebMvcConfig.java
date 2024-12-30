@@ -12,11 +12,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
-		.allowedOrigins("http://localhost:3000","http://192.168.3.22:8081")
+		.allowedOrigins("http://localhost:3000","http://localhost:8081","http://moviestar-front-env.eba-t3niwbek.ap-northeast-2.elasticbeanstalk.com")
 		.allowedMethods("GET","POST","PUT","DELETE")
 		.allowedHeaders("*")
 		.allowCredentials(true)
 		.maxAge(3600);
 	}
-	
 }

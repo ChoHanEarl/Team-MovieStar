@@ -1,71 +1,35 @@
-import React, {useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { View, Text, TouchableOpacity, Image, FlatList, StyleSheet } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useFavoriteContext } from "../context/FavoriteContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
+
 
 
 const LikeScreen = () => {
     const route = useRoute();
     const navigation = useNavigation();
-    const { favoriteMovies,setFavoriteMovies } = useFavoriteContext(); // 찜 목록 가져오기
+    const { favoriteMovies } = useFavoriteContext(); // 찜 목록 가져오기
     const numColumns = 3 // 영화 n개씩 보여주고 다음열로 넘어가기
-    const [loading, setLoading] = useState(true)
+
     
     const handleMoviePress = (movieId) => {
         navigation.navigate("Home",{screen:"DetailScreen",params:{ id:movieId}});
     };
 
-    const fetchFavoriteMovies = async () => {
-        try {
-            const token = await AsyncStorage.getItem("token");
-            if (!token) {
-                console.log("토큰이 없습니다.");
-                setLoading(false);
-                return;
+    useEffect(()=>{
+        const fetchFavoriteMovies = async() => {
+            try {
+                const token = await AsyncStorage.getItem('token')
+                const response = await axios.post(
+                    
+                )
+            } catch (error) {
+                
             }
-
-            const response = await axios.get("http://192.168.3.22:9090/user/private/like", {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-
-            const movies = response.data.userLikeList || [];
-            setFavoriteMovies(movies);
-
-            await AsyncStorage.setItem("favoriteMovies", JSON.stringify(movies));
-            setLoading(false);
-        } catch (error) {
-            console.error("찜 목록 가져오기 실패:", error);
-            setLoading(false);
         }
-    };
+    },[])
 
-    const loadFavoriteMoviesFromStorage = async () => {
-        try {
-            const storedMovies = await AsyncStorage.getItem("favoriteMovies");
-            if (storedMovies) {
-                setFavoriteMovies(JSON.parse(storedMovies)); 
-            }
-        } catch (error) {
-            console.error("찜 목록 불러오기 실패:", error);
-        }
-    };
-
-    useEffect(() => {
-        loadFavoriteMoviesFromStorage();
-        fetchFavoriteMovies();
-    }, []);
-
-    if (loading) {
-        return (
-            <View style={styles.loadingContainer}>
-                <Text style={styles.loadingText}>로딩 중...</Text>
-            </View>
-        );
-    }
 
     return (
         <View style={styles.background}>

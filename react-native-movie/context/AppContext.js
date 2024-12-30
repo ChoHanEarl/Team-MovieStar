@@ -1,58 +1,34 @@
-import React, { createContext, useState, useEffect } from 'react';
-import { AsyncStorage } from '@react-native-async-storage/async-storage';
+import { createContext } from "react";
 
 export const AppContext = createContext();
 
-export const AppProvider = ({ children }) => {
-    const [user, setUser] = useState(null); // 사용자 정보 상태
-    const [token, setToken] = useState(null); // 토큰 상태
+const AppProvider = ({ children }) => {
+    const [user, setUser] = useState({
+        userLikeList: [], // 초기 좋아요 목록
+    });
 
-    // 로그인 시 호출하는 함수
-    const login = async (userInfo, userToken) => {
-        try {
-            await AsyncStorage.setItem('user', JSON.stringify(userInfo));
-            await AsyncStorage.setItem('token', userToken);
-            setUser(userInfo);
-            setToken(userToken);
-        } catch (error) {
-            console.error("로그인 오류:", error);
-        }
+    // 좋아요 여부 확인 함수
+    const isMovieLiked = (movieId) => {
+        return user?.userLikeList?.some((movie) => movie.id === movieId);
     };
 
-    // 로그아웃 시 호출하는 함수
-    const logout = async () => {
-        try {
-            await AsyncStorage.removeItem('user');
-            await AsyncStorage.removeItem('token');
-            setUser(null);
-            setToken(null);
-        } catch (error) {
-            console.error("로그아웃 오류:", error);
-        }
+    // 좋아요 추가 함수
+    const addLikeMovie = (movie) => {
+        const updatedLikes = [...(user.userLikeList || []), movie];
+        setUser({ ...user, userLikeList: updatedLikes });
     };
 
-    // 앱 시작 시 사용자 정보를 AsyncStorage에서 불러오는 함수
-    const loadUserFromAsyncStorage = async () => {
-        try {
-            const storedUser = await AsyncStorage.getItem('user');
-            const storedToken = await AsyncStorage.getItem('token');
-            if (storedUser && storedToken) {
-                setUser(JSON.parse(storedUser));
-                setToken(storedToken);
-            }
-        } catch (error) {
-            console.error("AsyncStorage에서 사용자 정보 불러오기 오류:", error);
-        }
+    // 좋아요 제거 함수
+    const removeLikeMovie = (movieId) => {
+        const updatedLikes = user.userLikeList.filter((movie) => movie.id !== movieId);
+        setUser({ ...user, userLikeList: updatedLikes });
     };
-
-    // 앱 실행 시 사용자 정보를 불러오기
-    useEffect(() => {
-        loadUserFromAsyncStorage();
-    }, []);
 
     return (
-        <AppContext.Provider value={{ user, token, login, logout }}>
+        <AppContext.Provider value={{ user, setUser, isMovieLiked, addLikeMovie, removeLikeMovie }}>
             {children}
         </AppContext.Provider>
     );
 };
+
+export default AppProvider;

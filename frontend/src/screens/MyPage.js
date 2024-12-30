@@ -5,6 +5,7 @@ import { IoHome } from "react-icons/io5";
 import '../css/main/MyPage.css';
 import logo from "../logo/logo.png"
 import axios from 'axios';
+import { API_BASE_URL } from '../api/api-config';
 
 const MyPage = () => {
     const { user, setUser } = useContext(AppContext);
@@ -95,7 +96,7 @@ const MyPage = () => {
                 userEmail: formData.userEmail
             }));
 
-            axios.put("http://localhost:9090/user/private/modify",
+            axios.put(`${API_BASE_URL}/user/private/modify`,
                 {userName: formData.newUserName,
                 userNick: formData.userNick,
                 userEmail: formData.userEmail},

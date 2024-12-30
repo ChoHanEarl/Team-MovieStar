@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchMovieDetails, fetchMovieCredits } from "../api/tmdb";
 import { searchYouTubeTrailer } from "../api/youtube";
+import { API_BASE_URL } from "../api/api-config";
 import { FaHeart, FaRegHeart, FaStar , FaPlay } from "react-icons/fa";
 import moment from "moment";
 import "../css/detail/Detail.css"
@@ -195,7 +196,7 @@ const MovieDetail = ({ movieId, onClose }) => {
 
   useEffect(() => {
 
-    axios.get(`http://localhost:9090/movie/${movieId}`)
+    axios.get(`${API_BASE_URL}/movie/${movieId}`)
       .then((response) =>{
         
         setMovie(response.data)
@@ -211,7 +212,7 @@ const MovieDetail = ({ movieId, onClose }) => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await axios.get(`http://localhost:9090/review/${movieId}`)
+        const response = await axios.get(`${API_BASE_URL}/review/${movieId}`)
         console.log("Fetched Reviews:", response.data.data)
         const reviews = Array.isArray(response.data.data) ? response.data.data : []
         const sortedReviews = reviews.sort((a, b) => new Date(b.reviewDate) - new Date(a.reviewDate))
@@ -244,7 +245,7 @@ const MovieDetail = ({ movieId, onClose }) => {
     try {
       if(window.confirm("리뷰를 등록하시겠습니까?")) {
         const response = await axios.post(
-          "http://localhost:9090/review/private/write",
+          `${API_BASE_URL}/review/private/write`,
           newReview,
           { withCredentials: true}
         )
@@ -269,7 +270,7 @@ const MovieDetail = ({ movieId, onClose }) => {
     try {
       if (window.confirm("정말 삭제하시겠습니까?")) {
         const response = await axios.delete(
-          `http://localhost:9090/review/private/remove/${reviewId}`,
+          `${API_BASE_URL}/review/private/remove/${reviewId}`,
           { withCredentials: true }
         )
 
@@ -294,7 +295,7 @@ const MovieDetail = ({ movieId, onClose }) => {
   const updateReview = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:9090/review/private/modify/${editState.reviewId}`,
+        `${API_BASE_URL}/review/private/modify/${editState.reviewId}`,
         {
           reviewContent: editState.reviewContent,
           reviewRating: editState.reviewRating,
@@ -342,14 +343,14 @@ const MovieDetail = ({ movieId, onClose }) => {
 
     try {
         if (isLiked) {
-            const response = await axios.delete('http://localhost:9090/user/private/dislike/'+movieId,{
+            const response = await axios.delete(`${API_BASE_URL}/user/private/dislike/`+movieId,{
                 withCredentials: true
             });
             console.log("좋아요 삭제 응답:", response.data);
             removeLikeMovie(movieId);
         } else {
             const response = await axios.put(
-                'http://localhost:9090/user/private/like/'+movieId, 
+                `${API_BASE_URL}/user/private/like/`+movieId, 
                 null,
                 { withCredentials: true }
             );
