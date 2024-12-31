@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "../../css/login/FindIdOrPassword.css";
 import logo from "../../logo/logo.png"
+import { API_BASE_URL } from "../../api/api-config";
 
 const FindId = () => {
     const [email, setEmail] = useState('');
@@ -31,7 +32,7 @@ const FindId = () => {
         }
 
         try {
-            const response = await fetch(`/user/find-id?email=${email}`, {
+            const response = await fetch(`${API_BASE_URL}/user/find-id?email=${email}`, {
                 method: "GET",
             });
 
@@ -57,7 +58,7 @@ const FindId = () => {
         }
 
         try {
-            const response = await fetch(`/user/request_verification?email=${pwdEmail}`, { method: 'POST' });
+            const response = await fetch(`${API_BASE_URL}/user/request_verification?email=${pwdEmail}`, { method: 'POST' });
 
             if (!response.ok) {
                 throw new Error("이메일 전송 실패");
@@ -87,7 +88,7 @@ const FindId = () => {
         setIsLoading(true);
     
         try {
-            const response = await fetch(`/user/verify_email?email=${pwdEmail}&code=${takePwdCode}`,{
+            const response = await fetch(`${API_BASE_URL}/user/verify_email?email=${pwdEmail}&code=${takePwdCode}`,{
                 method:"POST"
             })
 

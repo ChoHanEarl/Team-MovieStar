@@ -372,9 +372,27 @@ public class UserController {
 		            .maxAge(60 * 60 * 24) // 1일
 		            .build();
 
-		    return ResponseEntity.ok()
-		            .header(HttpHeaders.SET_COOKIE, cookie.toString())
-		            .body(user);
+			Map<String, Object> userResponse = new HashMap<>();
+			userResponse.put("userId", user.getUserId());
+			userResponse.put("userEmail", user.getUserEmail());
+			userResponse.put("userNick", user.getUserNick());
+			userResponse.put("userName", user.getUserName());
+
+			// 영화 정보를 Map으로 변환
+			Set<Map<String, Object>> likedMovies = user.getUserLikeList().stream().map(movie -> {
+	            Map<String, Object> movieInfo = new HashMap<>();
+	            movieInfo.put("movieId", movie.getMovieId());
+	            movieInfo.put("movieName", movie.getMovieName());
+	            movieInfo.put("moviePoster", movie.getMoviePoster());
+	            movieInfo.put("movieOverview", movie.getMovieOverview());
+	            movieInfo.put("movieOpDate", movie.getMovieOpDate());
+	            movieInfo.put("movieScore", movie.getMovieScore());
+	            return movieInfo;
+	        }).collect(Collectors.toSet());
+
+			userResponse.put("userLikeList", likedMovies);
+
+			return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(userResponse);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
