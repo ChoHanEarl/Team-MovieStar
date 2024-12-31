@@ -3,6 +3,7 @@ spring:
     name: moviestar
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
+
     url: jdbc:mysql://awseb-e-7usczx7b3q-stack-awsebrdsdatabase-xrxpclgnuxt6.cr2gg80uqjm4.ap-northeast-2.rds.amazonaws.com:3306/ebdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
     username: root
     password: 12345678
@@ -31,3 +32,4 @@ server:
 tmdb:
   api:
     key: 8d8920fedcb7032d3b2b649d89e9d00f
+
