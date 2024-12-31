@@ -160,6 +160,7 @@ const styles = StyleSheet.create({
     background: {
         flex: 1,
         backgroundColor: 'rgba(0,0,0,0.8)',
+        padding:5,
     },
     scrollContainer: {
         flexGrow: 1,
@@ -170,18 +171,23 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         flexGrow: 1,
+        backgroundColor: 'rgba(0,0,0,0.8)',
+        padding:30,
+        borderRadius:30,
+
     },
     header: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        marginTop: 10, // 헤더를 위로 이동
+        marginTop: 20, // 헤더를 위로 이동
         marginBottom: 20, // 헤더 아래 간격
     },
     backButton: {
-        fontSize: 20,
+        fontSize: 30,
         marginRight: 10,
-        color: 'white'
+        color: 'white',
+        marginBottom:20
     },
     titleContent: {
         fontSize: 24,
@@ -189,7 +195,8 @@ const styles = StyleSheet.create({
         color: 'white',
         textAlign: "center",
         flex: 1,
-        marginRight: 30
+        marginRight: 30,
+        marginBottom:20
     },
     findIdContent: {
         fontSize: 16,

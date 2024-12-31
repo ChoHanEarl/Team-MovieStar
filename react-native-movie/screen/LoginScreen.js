@@ -133,6 +133,8 @@ const styles = StyleSheet.create({
         margin:16,
         flex:1,
         borderRadius:35,
+        marginBottom:100,
+        marginTop:100
     },
     loginForm:{
         width:300,

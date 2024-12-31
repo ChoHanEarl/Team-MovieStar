@@ -1,4 +1,4 @@
-import React, { useContext }from "react";
+import React, { useContext,useState,useEffect }from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "../screen/HomeScreen";
@@ -15,6 +15,9 @@ import {MaterialCommunityIcons} from '@expo/vector-icons'
 import { Image,Text,View,StyleSheet,TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { AppContext } from "../context/AppContext";
+import GenreListScreen from "../screen/GenreListScreen";
+import { fetchGenres } from "../api/tmdb";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -59,6 +62,28 @@ const DrawerNavigator = () => {
     const { user, setUser } = useContext(AppContext);
     const navigation = useNavigation();
 
+    const [genres, setGenres] = useState([]);
+    const [isGenreOpen, setIsGenreOpen] = useState(false);
+
+    useEffect(() => {
+        const getGenres = async () => {
+            try {
+                const genresData = await fetchGenres();  // TMDB API에서 장르 목록 가져오기
+                setGenres(genresData);  // 장르 데이터를 상태로 설정
+            } catch (error) {
+                console.error("Error fetching genres:", error);
+            }
+        };
+    
+        getGenres(); // 컴포넌트가 마운트될 때 장르 목록을 가져옵니다.
+    }, []);
+
+    const toggleGenreMenu = () => {
+        setIsGenreOpen(prevState => !prevState); 
+      };
+
+
+
     // 로그인 버튼 클릭 시
     const navigateToLoginScreen = () => {
         navigation.reset({
@@ -93,6 +118,8 @@ const DrawerNavigator = () => {
     const labelHandleLike = () => {
         navigation.navigate('Like')
     }
+
+    const EmptyComponent = () => <View />;
 
 
     return(
@@ -242,7 +269,56 @@ const DrawerNavigator = () => {
                         </TouchableOpacity>
                         )
                     } 
-                }}/>
+            }}/>
+             <Drawer.Screen
+                name="Genres"
+                component={EmptyComponent}
+                options={{
+                    
+                    drawerLabel: () => (
+                        <TouchableOpacity onPress={toggleGenreMenu}>
+                            <View style={{ flexDirection: 'row', marginLeft: -10 }}>
+                                <MaterialCommunityIcons name="view-list" size={20} color="white" />
+                                <Text style={{ color: "white", marginLeft: 10, fontWeight: 'bold' }}>장르</Text>
+                                <MaterialCommunityIcons 
+                                    name={isGenreOpen ? "chevron-down" : "chevron-right"} 
+                                    size={20} 
+                                    color="white" 
+                                    style={{ marginLeft: 10 }} 
+                                />
+                            </View>
+                        </TouchableOpacity>
+                    ),
+                }}
+            />
+            {isGenreOpen && genres.length > 0 && genres.map((genre) => (
+                <Drawer.Screen
+                    key={genre.id}
+                    name={genre.name}
+                    component={GenreListScreen}
+                    initialParams={{ genreId: genre.id, genreName: genre.name }}
+                    options={{
+                        headerTintColor: '#fff',
+                        headerStyle: {
+                            backgroundColor: 'black',
+                            height: 90,
+                        },
+                        drawerLabel: () => (
+                            <TouchableOpacity
+                                onPress={() => navigation.navigate('GenreListScreen', {
+                                    genreId: genre.id,
+                                    genreName: genre.name,
+                                })}
+                            >
+                                <View style={{ flexDirection: 'row', marginLeft: -5 }}>
+                                    <Text style={{ color: "white" }}>◆ {genre.name}</Text>
+                                </View>
+                            </TouchableOpacity>
+                        ),
+                    }}
+                />
+            ))}
+
             <Drawer.Screen name="Like" component={LikeScreen}
                 options={{
                     drawerLabel:()=>{
@@ -278,6 +354,7 @@ const DrawerNavigator = () => {
                         height:80,
                     },
                 }}/>
+            
         </Drawer.Navigator>
     )
 }
