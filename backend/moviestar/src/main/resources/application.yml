@@ -1,11 +1,18 @@
 spring:
+  mvc:
+    cors:
+      allowed-origins: "https://app.moviestar-hjw.site"
+      allowed-methods: "GET,POST,PUT,DELETE,OPTIONS"
+      allowed-headers: "*"
+      allow-credentials: true
+      max-age: 3600
   application:
     name: moviestar
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://awseb-e-kwwst3imd3-stack-awsebrdsdatabase-1dyuz2u5g217.c9e2guy6y1er.ap-southeast-2.rds.amazonaws.com:3306/ebdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-    username: testpm
-    password: 11111111
+    url: jdbc:mysql://awseb-e-7usczx7b3q-stack-awsebrdsdatabase-xrxpclgnuxt6.cr2gg80uqjm4.ap-northeast-2.rds.amazonaws.com:3306/ebdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password: 12345678
   jpa:
     show-sql: true
     hibernate:

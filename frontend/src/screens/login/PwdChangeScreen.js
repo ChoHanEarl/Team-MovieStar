@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { IoHome } from "react-icons/io5";
 import logo from "../../logo/logo.png"
 import axios from "axios";
+import { API_BASE_URL } from "../../api/api-config";
 
 import "../../css/main/ChangePwd.css" 
 
@@ -52,7 +53,7 @@ const PwdChangeScreen = () => {
         if (handleChangePassword()) {
             try {
                 const response = await axios.put(
-                    `/user/modifyPwd?email=${email}`, 
+                    `${API_BASE_URL}/user/modifyPwd?email=${email}`, 
                     {userPwd: newPassword},
                     {   
                         headers:
