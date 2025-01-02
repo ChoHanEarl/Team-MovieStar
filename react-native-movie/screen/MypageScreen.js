@@ -114,7 +114,7 @@ const MypageScreen= () => {
             try {
                 const token = await AsyncStorage.getItem('token');
                 const response = await axios.put(
-                    `http://192.168.3.22:9090/user/modifyPwd?email=${email}`, 
+                    `http://192.168.3.22:8081/user/modifyPwd?email=${email}`, 
                     {userPwd: newPassword,},
                     {
                         headers: {

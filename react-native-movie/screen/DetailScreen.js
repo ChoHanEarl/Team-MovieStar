@@ -181,10 +181,10 @@ const DetailScreen = () => {
 
     // 리뷰 추가
     const addReview = async () => {
-        // if (!user) {
-        //     alert('로그인 후 작성할 수 있습니다.');
-        //     return;
-        // }
+        if (!user) {
+            alert('로그인 후 작성할 수 있습니다.');
+            return;
+        }
         if (!review || review.trim() === "") {
             alert('리뷰 내용을 입력해주세요.');
             return;
