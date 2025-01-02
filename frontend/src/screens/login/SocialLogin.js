@@ -18,7 +18,6 @@ export const NaverLogin = () => {
                 .then((response) => {
                     if (response.status === 200) {
                         const userData = response.data;
-                        console.log("로그인 응답 데이터:", userData);
 
                         setUser({
                             userId: userData.userId,
@@ -27,7 +26,6 @@ export const NaverLogin = () => {
                             userName: userData.userName,
                             userLikeList: userData.userLikeList || []
                         });
-                        console.log("Context에 저장된 사용자 정보:", userData);
 
                         alert("로그인 성공")
                         navigate("/home")
@@ -59,7 +57,6 @@ export const GoogleLogin = () => {
                 .then((response) => {
                     if (response.status === 200) {
                         const userData = response.data;
-                        console.log("로그인 응답 데이터:", userData);
 
                         setUser({
                             userId: userData.userId,
@@ -68,7 +65,6 @@ export const GoogleLogin = () => {
                             userName: userData.userName,
                             userLikeList: userData.userLikeList || []
                         });
-                        console.log("Context에 저장된 사용자 정보:", userData);
 
                         alert("로그인 성공")
                         navigate("/home")

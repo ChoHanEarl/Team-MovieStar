@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "../../css/login/FindIdOrPassword.css";
 import logo from "../../logo/logo.png"
-import { API_BASE_URL } from "../../api/api-config";
+import { API_BASE_URL } from '../../api/api-config';
 
 const FindId = () => {
     const [email, setEmail] = useState('');

@@ -371,8 +371,8 @@ public class UserController {
 		            .path("/")      // 모든 경로에서 사용 가능
 		            .maxAge(60 * 60 * 24) // 1일
 		            .build();
-
-			Map<String, Object> userResponse = new HashMap<>();
+	        
+	        Map<String, Object> userResponse = new HashMap<>();
 			userResponse.put("userId", user.getUserId());
 			userResponse.put("userEmail", user.getUserEmail());
 			userResponse.put("userNick", user.getUserNick());
@@ -389,10 +389,10 @@ public class UserController {
 	            movieInfo.put("movieScore", movie.getMovieScore());
 	            return movieInfo;
 	        }).collect(Collectors.toSet());
-
 			userResponse.put("userLikeList", likedMovies);
 
 			return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(userResponse);
+		  
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}

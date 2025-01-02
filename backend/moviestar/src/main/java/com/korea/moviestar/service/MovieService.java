@@ -124,8 +124,8 @@ public class MovieService {
 
 	}
 
-	// 1시간마다 자동 갱신
-	@Scheduled(cron = "0 0 0/1 * * *")
+	// 하루에 한번 자동 갱신
+	@Scheduled(cron = "0 0 9 * * *")
 	@Transactional
 	public List<PopularDTO> saveAndGetPopular() {
 		populars.truncatePopular();// 테이블 비우기
@@ -162,8 +162,8 @@ public class MovieService {
 		return entities.stream().map(PopularDTO::new).collect(Collectors.toList());
 	}
 
-	// 1시간마다 자동 갱신
-	@Scheduled(cron = "0 2 0/1 * * *")
+	// 하루에 한번 자동 갱신
+	@Scheduled(cron = "0 0 10 * * *")
 	@Transactional
 	public List<TopRatedDTO> saveAndGetTopRated() {
 		topRates.truncateTopRated(); // 테이블 비우기
@@ -202,8 +202,8 @@ public class MovieService {
 		return entities.stream().map(TopRatedDTO::new).collect(Collectors.toList());
 	}
 
-	// 1시간마다 자동 갱신
-	@Scheduled(cron = "0 3 0/1 * * *")
+	// 하루에 한번 자동 갱신
+	@Scheduled(cron = "0 0 11 * * *")
 	@Transactional
 	public List<NowPlayingDTO> saveAndGetNowPlaying() {
 		nowPlayings.truncateNowPlaying();
@@ -296,7 +296,8 @@ public class MovieService {
 		return entities.stream().map(MovieThemeDTO::new).collect(Collectors.toList());
 	}
 
-	@Scheduled(cron = "0 10 0/1 * * *")
+	// 하루에 한번 자동 갱신
+	@Scheduled(cron = "0 0 12 * * *")
 	public void getAndSaveAllThemeMovies() {
 		getThemes();
 		List<ThemeEntity> entities = themes.findAll();

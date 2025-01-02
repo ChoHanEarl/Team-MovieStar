@@ -1,10 +1,12 @@
-import React from "react";
+import React, {useEffect, useContext} from "react";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../context/AppContext";
 import "../css/main/FirstPage.css"
 
 const FirstPage = ()=> {
 
   const navigate = useNavigate();
+  const {user} = useContext(AppContext)
 
   const handleClick = () => {
     navigate('/login')
@@ -13,6 +15,12 @@ const FirstPage = ()=> {
   const handleClick2 = () => {
     navigate('/home')
   }
+
+  useEffect(()=>{
+    if(user){
+      navigate('/home')
+    }
+  },[])
 
   return (
     <div className="App">

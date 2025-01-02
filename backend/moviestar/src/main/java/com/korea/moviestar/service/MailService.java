@@ -65,7 +65,7 @@ public class MailService {
         		.build();
         repository.save(entity);
         
-        String message = "이메일 인증을 위해 아래 코드를 입력하세요\n(보내주신 코드는 임시 비밀번호로 사용됩니다):\n\n" + code;
+        String message = "이메일 인증을 위해 아래 코드를 입력하세요:\n\n" + code;
         sendEmail(email, "이메일 인증 코드", message);
     }
     

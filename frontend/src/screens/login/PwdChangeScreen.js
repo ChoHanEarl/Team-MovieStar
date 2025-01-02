@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { IoHome } from "react-icons/io5";
 import logo from "../../logo/logo.png"
 import axios from "axios";
-import { API_BASE_URL } from "../../api/api-config";
 
 import "../../css/main/ChangePwd.css" 
+import { API_BASE_URL } from "../../api/api-config";
 
 
 const PwdChangeScreen = () => {
@@ -65,9 +65,7 @@ const PwdChangeScreen = () => {
                     }
                 );
 
-                console.log("서버 응답:", response);
                 if (response.status === 200) {
-                    console.log('비밀번호가 변경되었습니다.');
                     alert("비밀번호가 변경되었습니다.");
                     const userData = response.data;
                     setUser({

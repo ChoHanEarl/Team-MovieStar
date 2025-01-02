@@ -201,7 +201,6 @@ const MovieDetail = ({ movieId, onClose }) => {
         
         setMovie(response.data)
         setActor(response.data.movieActors)
-        console.log(response.data)
       })
     
   }, [movieId]);
@@ -213,7 +212,6 @@ const MovieDetail = ({ movieId, onClose }) => {
     const fetchReviews = async () => {
       try {
         const response = await axios.get(`${API_BASE_URL}/review/${movieId}`)
-        console.log("Fetched Reviews:", response.data.data)
         const reviews = Array.isArray(response.data.data) ? response.data.data : []
         const sortedReviews = reviews.sort((a, b) => new Date(b.reviewDate) - new Date(a.reviewDate))
         setReviewList(sortedReviews)
@@ -346,7 +344,6 @@ const MovieDetail = ({ movieId, onClose }) => {
             const response = await axios.delete(`${API_BASE_URL}/user/private/dislike/`+movieId,{
                 withCredentials: true
             });
-            console.log("좋아요 삭제 응답:", response.data);
             removeLikeMovie(movieId);
         } else {
             const response = await axios.put(
@@ -354,10 +351,8 @@ const MovieDetail = ({ movieId, onClose }) => {
                 null,
                 { withCredentials: true }
             );
-            console.log("좋아요 추가 응답:", response.data);
             addLikeMovie(movie);
         }
-        console.log(!isLiked)
         setIsLiked(!isLiked);
         
     } catch (error) {

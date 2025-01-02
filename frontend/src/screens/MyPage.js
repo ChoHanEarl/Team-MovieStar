@@ -23,6 +23,26 @@ const MyPage = () => {
     const [message, setMessage] = useState('');
     const [messageType, setMessageType] = useState('');
 
+    useEffect(() => {
+        if (!user) {
+            navigate("/home")
+        } else {
+            axios.get(`${API_BASE_URL}/user/secure-data`, { withCredentials: true })
+                .then((response) => {
+                    console.log(response.data);
+                })
+                .catch((error) => {
+                    if (error.response && error.response.status === 401) {
+                        console.log("Invalid token, logging out...");
+                        // 로그아웃 처리
+                        handleLogout();
+                    } else {
+                        console.log("Error: ", error.message);
+                    }
+                })
+        }
+    }, [])
+
     // 로그인되지 않은 경우 리다이렉트
     if (!user) {
         navigate('/login');
@@ -33,6 +53,20 @@ const MyPage = () => {
     const navigateToHome = () => {
         navigate("/home");
     };
+
+    const handleLogout = () => {
+
+        axios.post(`${API_BASE_URL}/user/logout`, {}, { withCredentials: true })
+            .then(() => {
+                setUser(null) // 사용자 로그아웃 처리
+                alert("로그아웃 처리되었습니다")
+            }).catch((error) => {
+                console.log(error)
+                setUser(null) // 사용자 로그아웃 처리
+
+            })
+
+    }
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -76,7 +110,7 @@ const MyPage = () => {
 
         if (storageKey) {
             const storedUser = JSON.parse(localStorage.getItem(storageKey));
-            
+
             // 새로운 정보로 업데이트
             const updatedUser = {
                 ...storedUser,
@@ -85,27 +119,33 @@ const MyPage = () => {
                 userEmail: formData.userEmail
             };
 
-            // 로컬 스토리지 업데이트
-            localStorage.setItem(storageKey, JSON.stringify(updatedUser));
-
-            // 컨텍스트 사용자 정보 업데이트
-            setUser(prev => ({
-                ...prev,
-                userName: formData.newUserName,
-                userNick: formData.userNick,
-                userEmail: formData.userEmail
-            }));
-
             axios.put(`${API_BASE_URL}/user/private/modify`,
-                {userName: formData.newUserName,
-                userNick: formData.userNick,
-                userEmail: formData.userEmail},
+                {
+                    userName: formData.newUserName,
+                    userNick: formData.userNick,
+                    userEmail: formData.userEmail
+                },
                 {
                     withCredentials: true
+                }).then(() => {
+                    // 로컬 스토리지 업데이트
+                    localStorage.setItem(storageKey, JSON.stringify(updatedUser));
+
+                    // 컨텍스트 사용자 정보 업데이트
+                    setUser(prev => ({
+                        ...prev,
+                        userName: formData.newUserName,
+                        userNick: formData.userNick,
+                        userEmail: formData.userEmail
+                    }));
+                    setMessage('프로필이 성공적으로 업데이트되었습니다.');
+                    setMessageType('success');
+                }).catch((error) => {
+                    setMessage(error.response.data)
+                    setMessageType('error')
                 })
 
-            setMessage('프로필이 성공적으로 업데이트되었습니다.');
-            setMessageType('success');
+
         }
     };
 
@@ -127,10 +167,7 @@ const MyPage = () => {
                     </button>
                     <button
                         className="logout-button"
-                        onClick={() => {
-                        setUser(null);
-                        navigate('/login');
-                        }}
+                        onClick={handleLogout}
                     >
                         로그아웃
                     </button>
@@ -140,13 +177,13 @@ const MyPage = () => {
             <div className="mypage-body">
                 <h1>마이페이지</h1>
                 <div className="mypage-tabs">
-                    <button 
+                    <button
                         className={activeTab === 'profile' ? 'active' : ''}
                         onClick={() => setActiveTab('profile')}
                     >
                         프로필 수정
                     </button>
-                    <button 
+                    <button
                         className={activeTab === 'password' ? 'active' : ''}
                         onClick={() => navigate('/ChangePwd')}
                     >
@@ -163,8 +200,7 @@ const MyPage = () => {
                                 type="text"
                                 name="newUserName"
                                 value={formData.newUserName}
-                                onChange={handleInputChange}
-                                placeholder="새 아이디 입력"
+                                readonly
                             />
                         </div>
                         <div className="input-group">
@@ -191,7 +227,7 @@ const MyPage = () => {
                     </div>
                 )}
 
-                
+
 
                 {message && (
                     <div className={`message ${messageType}`}>
@@ -199,33 +235,32 @@ const MyPage = () => {
                     </div>
                 )}
 
-<div className="liked-movies-section">
-    <h2>좋아요 표시한 영화</h2>
-    {user.userLikeList && user.userLikeList.length > 0 ? (
-        <div className="liked-movies-flex">
-            {user.userLikeList.map((movie, index) => (
-                <div key={movie.movieId || index} className="liked-movie-item">
-                    {console.log("Movie data:", movie)} {/* 데이터 확인용 로그 */}
-                    {movie.moviePoster ? (
-                        <img 
-                            src={`https://image.tmdb.org/t/p/w200${movie.moviePoster}`} 
-                            alt={movie.movieName}
-                            onError={(e) => {
-                                e.target.onerror = null; 
-                                e.target.src = '대체 이미지 URL';
-                            }} 
-                        />
+                <div className="liked-movies-section">
+                    <h2>좋아요 표시한 영화</h2>
+                    {user.userLikeList && user.userLikeList.length > 0 ? (
+                        <div className="liked-movies-flex">
+                            {user.userLikeList.map((movie, index) => (
+                                <div key={movie.movieId || index} className="liked-movie-item">
+                                    {movie.moviePoster ? (
+                                        <img
+                                            src={`https://image.tmdb.org/t/p/w200${movie.moviePoster}`}
+                                            alt={movie.movieName}
+                                            onError={(e) => {
+                                                e.target.onerror = null;
+                                                e.target.src = '대체 이미지 URL';
+                                            }}
+                                        />
+                                    ) : (
+                                        <div className="no-poster">포스터 없음</div>
+                                    )}
+                                    <p>{movie.movieName || '제목 없음'}</p>
+                                </div>
+                            ))}
+                        </div>
                     ) : (
-                        <div className="no-poster">포스터 없음</div>
+                        <p>좋아요 표시한 영화가 없습니다.</p>
                     )}
-                    <p>{movie.movieName || '제목 없음'}</p>
                 </div>
-            ))}
-        </div>
-    ) : (
-        <p>좋아요 표시한 영화가 없습니다.</p>
-    )}
-</div>
             </div>
         </div>
     );

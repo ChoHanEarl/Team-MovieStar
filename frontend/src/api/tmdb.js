@@ -1,17 +1,7 @@
 import axios from "axios";
 import { API_BASE_URL } from "./api-config";
 
-const API_KEY = process.env.REACT_APP_TMDB_API_KEY; // TMDB API 키
-const API_URL = "https://api.themoviedb.org/3"; // TMDB API 기본 URL
 
-// Axios 인스턴스 생성
-const instance = axios.create({
-  baseURL: API_URL,
-  params: {
-    api_key: API_KEY,
-    language: "ko-KR", // 언어 설정
-  },
-});
 
 // 인기 영화 데이터를 가져오는 함수
 export const fetchPopularMovies = async () => {
