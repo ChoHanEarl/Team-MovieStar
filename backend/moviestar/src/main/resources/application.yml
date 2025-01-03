@@ -3,9 +3,9 @@ spring:
     name: moviestar
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:mysql://awseb-e-7usczx7b3q-stack-awsebrdsdatabase-xrxpclgnuxt6.cr2gg80uqjm4.ap-northeast-2.rds.amazonaws.com:3306/ebdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password: 12345678
   jpa:
     show-sql: true
     hibernate:
@@ -17,8 +17,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
+    username: wlgjs566@gmail.com
+    password: jhdnqrqkcjmqigvt
     properties:
       mail:
         smtp:
@@ -30,15 +30,4 @@ server:
 
 tmdb:
   api:
-    key: ${TMDB_API_KEY}
-
-google:
-  client:
-    id: ${GOOGLE_CLIENT_ID}
-    secret: ${GOOGLE_CLIENT_SECRET}
-  login:
-    redirect: https://moviestar-moon.site/login/google
-
-naver:
-  client-id: ${NAVER_CLIENT_ID}
-  client-secret: ${NAVER_CLIENT_SECRET}
+    key: 8d8920fedcb7032d3b2b649d89e9d00f

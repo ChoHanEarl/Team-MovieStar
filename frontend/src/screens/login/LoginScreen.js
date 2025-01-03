@@ -20,7 +20,7 @@ const LoginScreen = () => {
   // 네이버 로그인
   const handleNaverLogin = () => {
     const NAVER_CLIENT_ID = process.env.REACT_APP_NAVER_LOGIN_CLIENT_ID; // 클라이언트 ID
-        const REDIRECT_URI = 'https://moviestar-moon.site/login/naver'; // Redirect URI
+        const REDIRECT_URI = 'https://moviestar-hjw.site/login/naver'; // Redirect URI
         const STATE = "someRandomState"; // CSRF 방지를 위한 state 값
     
         if (!NAVER_CLIENT_ID) {
@@ -36,7 +36,7 @@ const LoginScreen = () => {
   // 구글 로그인
   const handleGoogleLogin = () => {
     const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_LOGIN_CLIENT_ID; // 클라이언트 ID
-    const REDIRECT_URI = 'https://moviestar-moon.site/login/google'; // Redirect URI
+    const REDIRECT_URI = 'https://moviestar-hjw.site/login/google'; // Redirect URI
     const SCOPE = "email profile";
     // oauth 요청 URL
     const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=${SCOPE}`;
