@@ -46,7 +46,7 @@ const PwdChangeScreen = () => {
       try {
         const token = await AsyncStorage.getItem("token");
         const response = await axios.put(
-          `http://10.0.2.2:9090/user/modifyPwd?email=${email}`,
+          `http://Moviestar-env.eba-7mxrpygu.ap-northeast-2.elasticbeanstalk.com/user/modifyPwd?email=${email}`,
           { userPwd: newPassword },
           {
             headers: {

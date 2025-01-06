@@ -20,7 +20,7 @@ const FindIdOrPwdScreen = () => {
         }
 
         try {
-            const response = await axios.get(`http://10.0.2.2:9090/user/find-id`, {
+            const response = await axios.get(`http://Moviestar-env.eba-7mxrpygu.ap-northeast-2.elasticbeanstalk.com/user/find-id`, {
                 params: { email: findIdEmail },
             });
 
@@ -45,7 +45,7 @@ const FindIdOrPwdScreen = () => {
         setPwMessage("이메일 발송 중입니다...");
 
         try {
-            const response = await axios.post(`http://10.0.2.2:9090/user/request_verification?email=${findPwdEmail}`);
+            const response = await axios.post(`http://Moviestar-env.eba-7mxrpygu.ap-northeast-2.elasticbeanstalk.com/user/request_verification?email=${findPwdEmail}`);
 
             if (response.data.success) {
                 setPwMessage(response.data.message || "인증코드를 이메일로 발송했습니다.");
@@ -68,7 +68,7 @@ const FindIdOrPwdScreen = () => {
         try {
             const token = await AsyncStorage.getItem("token");
             const response = await axios.post(
-                `http://10.0.2.2:9090/user/verify_email?email=${findPwdEmail}&code=${takePwdCode}`,
+                `http://Moviestar-env.eba-7mxrpygu.ap-northeast-2.elasticbeanstalk.com/user/verify_email?email=${findPwdEmail}&code=${takePwdCode}`,
                 {
                     headers: {
                         "Content-Type": "application/json",

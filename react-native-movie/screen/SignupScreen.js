@@ -57,7 +57,7 @@ const Signup = () => {
     if (!disabled) {
       setLoading(true); // 로딩 시작
       try {
-        const response = await fetch("http://10.0.2.2:9090/user/signup", {
+        const response = await fetch("http://Moviestar-env.eba-7mxrpygu.ap-northeast-2.elasticbeanstalk.com/user/signup", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -196,14 +196,14 @@ const styles = StyleSheet.create({
     fontSize: 22,
     marginBottom: 20,
     padding: 5,
-    marginRight: -10,
+    paddingRight:90
   },
   backButton: {
     color: "#fff",
     fontSize: 30,
     justifyContent: "center",
     marginBottom: 30,
-    marginLeft: -100,
+    marginRight:70
   },
   message: {
     color: "red",

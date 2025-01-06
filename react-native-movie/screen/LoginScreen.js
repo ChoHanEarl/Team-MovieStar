@@ -24,7 +24,7 @@ const LoginScreen = () => {
         try {
             console.log(formData)
             const response = await axios.post(
-                "http://10.0.2.2:9090/user/signin",
+                "http://Moviestar-env.eba-7mxrpygu.ap-northeast-2.elasticbeanstalk.com/user/signin",
                 {
                     userName: formData.userName,
                     userPwd: formData.userPwd
@@ -55,7 +55,7 @@ const LoginScreen = () => {
                 setError("아이디 또는 비밀번호가 일치하지 않습니다.");
             }
         } catch (err) {
-            setError("로그인 오류가 발생했습니다. 다시 시도해 주세요:" + err);
+            setError("로그인 오류가 발생했습니다. 다시 시도해 주세요");
             console.error(err.message)
         }
     };
@@ -119,7 +119,7 @@ const LoginScreen = () => {
 const styles = StyleSheet.create({
     background:{
         flex: 1,
-        padding:5,
+        padding:0,
         justifyContent: 'center',
         alignItems: 'center',
         resizeMode: 'cover',
@@ -129,12 +129,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.9)', // 투명한 배경
         justifyContent: 'center',
         alignItems: 'center',
-        padding:24,
-        margin:16,
+        padding:30,
+        margin:20,
         flex:1,
         borderRadius:35,
-        marginBottom:100,
-        marginTop:100
+        marginBottom:70,
+        marginTop:70
     },
     loginForm:{
         width:300,
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
         color:"white",
         textAlign:'center',
         justifyContent:'center',
-        marginBottom:10,
+        marginBottom:6,
         padding:5,
     },
     socialinput:{
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
         color:'white',
         fontSize:12,
         margin:5,
-        marginBottom:10,
+        marginBottom:15,
         paddingLeft:10,
         borderWidth:1,
         borderColor:'white',
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
         fontSize:12,
         margin:5,
         paddingLeft:10,
-        marginBottom:10,
+        marginBottom:15,
         borderWidth:1,
         borderColor:'white',
         borderRadius:8,

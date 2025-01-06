@@ -7,18 +7,31 @@ const GenreListScreen = ({route}) => {
   const {  genreId, genreName } = route.params || {};
     const navigation = useNavigation();
     const [movies, setMovies] = useState([]);
+    const [loading, setLoading] = useState(true); // 로딩 상태 추가
 
     useEffect(() => {
       const getMoviesByGenre = async () => {
-        const moviesData = await fetchMoviesByGenre(genreId);
-        setMovies(moviesData);
+        setLoading(true); // 데이터를 로딩할 때 로딩 상태를 true로 설정
+        try {
+          const moviesData = await fetchMoviesByGenre(genreId);
+          setMovies(moviesData);
+        } catch (error) {
+          console.error("Error fetching movies by genre:", error);
+        } finally {
+          setLoading(false); // 데이터 로딩이 끝나면 로딩 상태를 false로 설정
+        }
       };
-      getMoviesByGenre();
+      
+      getMoviesByGenre(); // 컴포넌트가 렌더링될 때마다 장르별 영화 데이터를 가져옵니다.
     }, [genreId]);
 
-    const handleNavigateToDetail = (movieId) => {
-    navigation.navigate("DetailScreen", { id: movieId });
+  const handleNavigateToDetail = (movieId) => {
+      navigation.navigate("Home", { 
+        screen: "DetailScreen", // 중첩된 네비게이터 내의 'DetailScreen'을 찾음
+        params: { id: movieId } 
+      });
   };
+    
 
     const renderItem = ({ item }) => (
         <TouchableOpacity style={styles.movieItem} onPress={() => handleNavigateToDetail(item.id)}>
@@ -36,7 +49,7 @@ const GenreListScreen = ({route}) => {
           <FlatList
             data={movies}
             renderItem={renderItem}
-            keyExtractor={(item) => item.id.toString()}
+            keyExtractor={(item) => item.id ? item.id.toString() : item.title}
             numColumns={3}
             columnWrapperStyle={styles.columnWrapper}
           />
@@ -58,8 +71,9 @@ const GenreListScreen = ({route}) => {
         },
         movieItem: {
           flex: 1,
-          margin: 0,
+          margin: 5,
           alignItems: "center",
+          justifyContent: "center"
         },
         moviePoster: {
           width: "90%",
@@ -74,7 +88,7 @@ const GenreListScreen = ({route}) => {
           flex: 1,
         },
         columnWrapper: {
-          justifyContent: "center",
+          justifyContent: "space-between",
         },
       });
 

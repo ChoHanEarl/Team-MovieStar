@@ -82,7 +82,6 @@ const DrawerNavigator = () => {
 
     const toggleGenreMenu = () => {
         setIsGenreOpen(prevState => !prevState);
-        
       };
 
 

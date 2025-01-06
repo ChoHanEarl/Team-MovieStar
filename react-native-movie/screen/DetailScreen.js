@@ -1,5 +1,5 @@
 import React, { useEffect, useState,useContext } from 'react';
-import { View, Text, Image, TextInput, Button, TouchableOpacity, ScrollView, StyleSheet,FlatList } from 'react-native';
+import { View, Text, Image, TextInput, Button, TouchableOpacity, ScrollView, StyleSheet,FlatList,KeyboardAvoidingView } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { fetchMovieDetails, fetchMovieCredits } from '../api/tmdb';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -7,6 +7,7 @@ import moment from 'moment';
 import { AppContext } from '../context/AppContext';
 import { useFavoriteContext } from '../context/FavoriteContext';
 import axios from 'axios';
+import { Platform } from 'react-native';
 
 const StarRating = ({ rating, setRating, size = 20 }) => (
     <View style={styles.starRating}>
@@ -57,21 +58,23 @@ const ReviewItem = ({ item, onEdit, onRemove, editable, editState, updateReview,
             </TouchableOpacity>
         </View>
 
-        {editable && editState.id === item.id && (
-            <View style={styles.reviewForm}>
+        {editable && editState.id === item.reviewId && (
+            <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : undefined} // iOS에서 키보드가 텍스트필드를 가리지 않도록 처리
+                style={styles.reviewForm}
+            >
                 <StarRating
                     rating={editState.reviewRating}
                     setRating={(newRate) => setEditState((prev) => ({ ...prev, reviewRating: newRate }))}
                     size={15}
                 />
                 <TextInput
-                    style={styles.reviewInput}  
+                    style={styles.reviewInput}
                     placeholder="리뷰 내용을 입력해주세요"
                     placeholderTextColor="white"
-                    value={editState.reviewContent}
+                    value={editState.reviewContent || ''}  // 기본값 설정
                     onChangeText={(text) => setEditState((prev) => ({ ...prev, reviewContent: text }))}
                 />
-
                 <View style={styles.reviewUser}>
                     <TouchableOpacity style={styles.reviewEditButton} onPress={updateReview}>
                         <Text style={styles.buttonText}>수정</Text>
@@ -80,7 +83,7 @@ const ReviewItem = ({ item, onEdit, onRemove, editable, editState, updateReview,
                         <Text style={styles.buttonText}>취소</Text>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         )}
     </View>
 );
@@ -140,14 +143,14 @@ const DetailScreen = () => {
     useEffect(() => {
         const fetchReviews = async () => {
             try {
-                const response = await axios.get(`http://192.168.3.22:9090/review/${id}`);
+                const response = await axios.get(`http://Moviestar-env.eba-7mxrpygu.ap-northeast-2.elasticbeanstalk.com/review/${id}`);
                 setReviewList(response.data.data);
             } catch (error) {
                 console.error('Error fetching reviews:', error);
             }
         };
         fetchReviews();
-    }, [id]);
+    }, [id,reviewList]);
 
     // 출연진 정보 가져오기
     useEffect(() => {
@@ -204,7 +207,7 @@ const DetailScreen = () => {
         };
 
         try {
-            const response = await axios.post('http://192.168.3.22:9090/review/private/write', newReview);
+            const response = await axios.post('http://Moviestar-env.eba-7mxrpygu.ap-northeast-2.elasticbeanstalk.com/review/private/write', newReview);
             setReviewList((prev) => [response.data, ...prev]); // 새 리뷰를 리스트 앞에 추가.
             setReview(''); // 리뷰 입력 초기화
         } catch (error) {
@@ -217,13 +220,13 @@ const DetailScreen = () => {
     const updateReview = async () => {
         try {
             const response = await axios.put(
-                `http://192.168.3.22:9090/review/private/modify/${editState.id}`,
-                { review: editState.review, rate: editState.rate }
+                `http://Moviestar-env.eba-7mxrpygu.ap-northeast-2.elasticbeanstalk.com/review/private/modify/${editState.id}`,
+                { reviewContent: editState.reviewContent, reviewRating: editState.reviewRating }
             );
             setReviewList((prev) =>
                 prev.map((item) =>
                     item.id === editState.id
-                        ? { ...item, rate: response.data.rate, review: response.data.review }
+                        ? { ...item, reviewRating: response.data.reviewRating, reviewContent: response.data.reviewContent }
                         : item
                 )
             );
@@ -257,7 +260,7 @@ const DetailScreen = () => {
                 return;
             }
     
-            await axios.delete(`http://192.168.3.22:9090/review/private/remove/${numericReviewId}`);
+            await axios.delete(`http://Moviestar-env.eba-7mxrpygu.ap-northeast-2.elasticbeanstalk.com/review/private/remove/${numericReviewId}`);
             setReviewList((prev) => prev.filter((item) => item.id !== numericReviewId)); // 삭제된 리뷰 제거
             
             alert("리뷰가 삭제되었습니다.")
@@ -276,11 +279,20 @@ const DetailScreen = () => {
     };
     
 
-    // 리뷰 수정 상태 변경
     const handleEdit = (item) => {
-        setEditable(true);
-        setEditState({ id: item.id, rate: item.rate, review: item.review });
+        console.log("Item to edit:", item);  // item.reviewId 확인
+        if (item.reviewId) {
+            setEditable(true);
+            setEditState({
+                id: item.reviewId,  // reviewId를 id로 설정
+                reviewRating: item.reviewRating,
+                reviewContent: item.reviewContent
+            });
+        } else {
+            alert('유효하지 않은 리뷰 ID입니다.');
+        }
     };
+    
 
     // 수정 취소
     const cancelEdit = () => {
@@ -290,72 +302,75 @@ const DetailScreen = () => {
 
 
 
-return (
-        <FlatList
-            style={styles.container}
-            ListHeaderComponent={
-                <>
-                    <TouchableOpacity onPress={() => navigation.navigate('HomeStack')}>
-                        <Text style={styles.backButton}>←</Text>
-                    </TouchableOpacity>
-
-                    <View style={styles.header}>
-                        <Image
-                            source={{ uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}` }}
-                            style={styles.poster}
-                        />
-                        <View style={styles.movieDetails}>
-                            <View style={styles.likeList}>
-                                <Text style={styles.title}>{movie.title}</Text>
-                                <TouchableOpacity onPress={toggleFavorite}>
-                                    <Ionicons 
-                                        style={styles.like}
-                                        name={isFavorite ? 'heart' : 'heart-outline'} 
-                                        size={20} 
-                                        color={isFavorite ? 'red' : 'white'} 
-                                    />
-                                </TouchableOpacity>
+    return (
+            <FlatList
+                style={styles.container}
+                
+                ListHeaderComponent={
+                    <>
+                        <TouchableOpacity onPress={() => navigation.navigate('HomeStack')}>
+                            <Text style={styles.backButton}>←</Text>
+                        </TouchableOpacity>
+    
+                        <View style={styles.header}>
+                            <Image
+                                source={{ uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}` }}
+                                style={styles.poster}
+                            />
+                            <View style={styles.movieDetails}>
+                                <View style={styles.likeList}>
+                                    <Text style={styles.title}>{movie.title}</Text>
+                                    <TouchableOpacity onPress={toggleFavorite}>
+                                        <Ionicons 
+                                            style={styles.like}
+                                            name={isFavorite ? 'heart' : 'heart-outline'} 
+                                            size={20} 
+                                            color={isFavorite ? 'red' : 'white'} 
+                                        />
+                                    </TouchableOpacity>
+                                </View>
+                                <ScrollView style={{ maxHeight: 140 }}>
+                                    <Text style={styles.overview}>{movie.overview}</Text>
+                                </ScrollView>
+                                <Text style={styles.releaseDate}>
+                                    <Text style={styles.bold}>Release Date: {movie.release_date}</Text>
+                                </Text>
+                                <Text style={styles.rating}>
+                                    <Text style={styles.bold}>Rating: {movie.vote_average}/10</Text>
+                                </Text>
                             </View>
-                            <ScrollView style={{maxHeight:140}}>
-                                <Text style={styles.overview}>{movie.overview}</Text>
-                            </ScrollView>
-                            <Text style={styles.releaseDate}>
-                                <Text style={styles.bold}>Release Date: {movie.release_date}</Text>
-                            </Text>
-                            <Text style={styles.rating}>
-                                <Text style={styles.bold}>Rating: {movie.vote_average}/10</Text>
-                            </Text>
                         </View>
-                    </View>
-
-                    <Text style={styles.bold2}>출연진</Text>
-                    <ActorList actors={actor} />
-
-                    <ReviewForm
-                        rate={rate}
-                        setRate={setRate}
-                        review={review}
-                        setReview={setReview}
-                        addReview={addReview}
-                    />
-                </>
-            }
-            data={reviewList}
-            keyExtractor={(item, index) => item.id ? item.id.toString() : index.toString()}
-            renderItem={({ item }) => (
-                <ReviewItem
-                    item={item}  
-                    onEdit={handleEdit}
-                    onRemove={handleRemove}
-                    editable={editable}
-                    editState={editState}
-                    updateReview={updateReview}
-                    cancelEdit={cancelEdit}
-                    setEditState={setEditState}
-                />
-            )}
-        />
-    );
+    
+                        <Text style={styles.bold2}>출연진</Text>
+                        <ActorList actors={actor} />
+                        <ReviewForm
+                            rate={rate}
+                            setRate={setRate}
+                            review={review}
+                            setReview={setReview}
+                            addReview={addReview}
+                        />
+                    </>
+                }
+                data={reviewList}
+                keyExtractor={(item, index) => item.reviewId ? item.reviewId.toString() : index.toString()}
+                renderItem={({ item }) => (
+                    <ScrollView>
+                        <ReviewItem
+                            item={item}  
+                            onEdit={handleEdit}
+                            onRemove={handleRemove}
+                            editable={editable}
+                            editState={editState}
+                            updateReview={updateReview}
+                            cancelEdit={cancelEdit}
+                            setEditState={setEditState}
+                        />
+                    </ScrollView>
+                )}
+            />
+            
+    );    
 };
 
 
@@ -407,7 +422,6 @@ const styles = StyleSheet.create({
         marginTop:-5
     },
     reviewForm: {
-        
          marginVertical: 20,
     },
     reviewTitle: {
