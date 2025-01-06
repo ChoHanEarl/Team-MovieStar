@@ -1,0 +1,74 @@
+.pwd-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.h1s {
+    padding: 20px;
+    margin-bottom: 40px;
+    margin-top: -30px;
+    text-align: center;
+}
+
+.input-boxs {
+    background-color: #353535;
+    padding: 90px;
+    border-radius: 10px;
+    width: 650px;
+    margin-top: 170px;
+    box-sizing: border-box;
+}
+
+.input-groups {
+    margin-bottom: 30px;
+}
+
+.input-groups label {
+    display: block;
+    margin-bottom: -10px;
+}
+
+.input-groups input {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.login-buttons {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.error-messages {
+    margin-top: 30px;
+    color: red;
+    margin-bottom: 15px;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* ChangePwd.css */
+.button {
+    background-color: #007bff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
