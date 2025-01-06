@@ -1,4 +1,5 @@
 import axios from "axios";
+import { API_BASE_URL } from "./api-config";
 
 // YouTube API 키 환경변수에서 불러오기
 const YOUTUBE_API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY;
@@ -29,3 +30,14 @@ export const searchYouTubeTrailer = async (query) => {
     throw error;
   }
 };
+
+export const videoTailer = async(movieId) =>{
+  try{
+    const response = await axios.get(`${API_BASE_URL}/movie/video/`+movieId)
+    
+    return response.data.movieVideo;
+  }catch(error){
+    console.error("YouTube 예고편 검색 중 오류:", error);
+    throw error;
+  }
+}

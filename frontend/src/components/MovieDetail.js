@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchMovieDetails, fetchMovieCredits } from "../api/tmdb";
-import { searchYouTubeTrailer } from "../api/youtube";
+import { searchYouTubeTrailer, videoTailer } from "../api/youtube";
 import { API_BASE_URL } from "../api/api-config";
 import { FaHeart, FaRegHeart, FaStar , FaPlay } from "react-icons/fa";
 import moment from "moment";
@@ -368,9 +368,9 @@ const MovieDetail = ({ movieId, onClose }) => {
   //예고편 검색 함수
   const searchTrailer = async () => {
     try {
-        const trailer = await searchYouTubeTrailer(`${movie.movieName} 예고편`);
+        const trailer = await videoTailer(movieId);
         if (trailer) {
-            const embedUrl = `https://www.youtube.com/embed/${trailer.id.videoId}`;
+            const embedUrl = `https://www.youtube.com/embed/${trailer}`;
             setTrailerUrl(embedUrl);
         } else {
             alert("적합한 예고편을 찾을 수 없습니다.");

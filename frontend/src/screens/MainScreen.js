@@ -233,7 +233,7 @@ const HomePage = () => {
           <header className="main-header">
             <img src={logo} className="main-logo" onClick={handleLogoClick} />
             {/* 영화 검색 입력창 */}
-            <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", width: "60%" }}>
+            <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", width: "50%" }}>
               <input
                 type="text"
                 className="search-bar"

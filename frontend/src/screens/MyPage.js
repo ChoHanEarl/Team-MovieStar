@@ -12,12 +12,8 @@ const MyPage = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('profile');
     const [formData, setFormData] = useState({
-        userPwd: user?.userName || '',
         newUserName: user?.userName || '',
         userNick: user?.userNick || '',
-        currentPassword: '',
-        newPassword: '',
-        confirmNewPassword: '',
         userEmail: user?.userEmail || ''
     });
     const [message, setMessage] = useState('');
@@ -80,20 +76,6 @@ const MyPage = () => {
     const validateProfileUpdate = () => {
         if (!formData.newUserName || !formData.userNick) {
             setMessage('아이디와 닉네임을 모두 입력해주세요.');
-            setMessageType('error');
-            return false;
-        }
-        return true;
-    };
-
-    const validatePasswordUpdate = () => {
-        if (!formData.currentPassword || !formData.newPassword || !formData.confirmNewPassword) {
-            setMessage('모든 비밀번호 입력란을 채워주세요.');
-            setMessageType('error');
-            return false;
-        }
-        if (formData.newPassword !== formData.confirmNewPassword) {
-            setMessage('새 비밀번호와 비밀번호 확인이 일치하지 않습니다.');
             setMessageType('error');
             return false;
         }
@@ -185,7 +167,7 @@ const MyPage = () => {
                     </button>
                     <button
                         className={activeTab === 'password' ? 'active' : ''}
-                        onClick={() => navigate('/ChangePwd')}
+                        onClick={() => navigate('/ChangePwd', { state: { userEmail: user.userEmail } })}
                     >
                         비밀번호 변경
                     </button>

@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { AppContext } from "../../context/AppContext";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { IoHome } from "react-icons/io5";
 import logo from "../../logo/logo.png"
 import axios from "axios";
@@ -11,11 +11,14 @@ import { API_BASE_URL } from "../../api/api-config";
 
 const PwdChangeScreen = () => {
     const navigate = useNavigate();
+    const location = useLocation()
 
-    const [email,setEmail] = useState('')
+    const [email,setEmail] = useState(location.state?.userEmail || '')
+    const isReadOnly = !!location.state?.userEmail
     const [newPassword, setNewPassword] = useState('')
     const [confirmNewPassword, setConfirmNewPassword] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
+
     const {setUser} = useContext(AppContext)
 
     const emailCheck = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/
@@ -104,15 +107,7 @@ const PwdChangeScreen = () => {
                     >
                         <IoHome /> 홈
                     </button>
-                    <button
-                        className="logout-button"
-                        onClick={() => {
-                        setUser(null);
-                        navigate('/login');
-                        }}
-                    >
-                        로그아웃
-                    </button>
+                    
                 </div>
             </header>
             <div className="input-boxs">
@@ -125,6 +120,7 @@ const PwdChangeScreen = () => {
                         value={email}
                         onChange={(e)=>setEmail(e.target.value)}
                         placeholder="이메일 입력"
+                        readOnly={isReadOnly}
                     />
                 </div>
                 <div className="input-groups">

@@ -40,20 +40,22 @@ border-bottom: 3px solid #ddd;
 
 .main-logo {
   max-width: 200px;
-  width: auto;
+  width: 25vw;
   height: auto;
   cursor: pointer;
 }
 
 .main-header button {
   right: 100px; /* 우측 여백 */
-  padding: 10px 10px;
+  padding: 12px 16px;
   font-size: 14px;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  margin-right: 50px;
+  margin-right: 2vw;
+  white-space: nowrap; 
+  overflow: hidden; 
 }
 
 .mypage-button-main {
