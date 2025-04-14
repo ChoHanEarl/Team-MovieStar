@@ -1,0 +1,79 @@
+/* 슬라이더 스타일 */
+.slider-section {
+    margin: 20px;
+  }
+  
+  .slider-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+    text-align: left;
+    padding-left: 20px;
+  }
+  
+  .slider-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .slider {
+    display: flex;
+    overflow-x: auto;
+    padding: 20px 0;
+    scrollbar-width: none;
+  }
+  
+  .slider::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .slider-item {
+    flex: 0 0 auto;
+    width: 200px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  
+  .slider-item img {
+    width: 100%;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+  }
+  
+  .slider-item img:hover {
+    transform: scale(1.1);
+  }
+  
+  /* 슬라이더 버튼 스타일 */
+  .slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.7); /* 반투명한 배경 */
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    font-size: 24px; /* 화살표 크기 */
+    transition: none; /* 호버 효과 제거 */
+  }
+  
+  .slider-btn.left {
+    left: 10px;
+  }
+  
+  .slider-btn.right {
+    right: 10px;
+  }
+  
+  .slider-btn span {
+    display: inline-block;
+    font-size: 24px;
+    font-weight: bold;
+  }
